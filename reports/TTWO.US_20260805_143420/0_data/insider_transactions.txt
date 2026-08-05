@@ -1,0 +1,143 @@
+# Insider Transactions data for TTWO
+# Data retrieved on: 2026-08-05 14:34:29
+
+,Shares,Value,URL,Text,Insider,Position,Transaction,Start Date,Ownership
+0,334,84345,,Sale at price 252.53 per share.,SIMINOFF ELLEN F,Director,,2026-07-01,I
+1,104,0,,Stock Award(Grant) at price 0.00 per share.,SIMINOFF ELLEN F,Director,,2026-07-01,D
+2,93,0,,Stock Award(Grant) at price 0.00 per share.,VIERA PAUL E,Director,,2026-07-01,D
+3,82,0,,Stock Award(Grant) at price 0.00 per share.,GORDON WILLIAM BINGHAM,Director,,2026-07-01,D
+4,500,122305,,Sale at price 244.61 per share.,MOSES JON J,Director,,2026-06-22,D
+5,4419,1016370,,Sale at price 230.00 per share.,EMERSON DANIEL P,Officer,,2026-06-16,D
+6,4421,950515,,Sale at price 215.00 per share.,EMERSON DANIEL P,Officer,,2026-06-15,D
+7,500,107608,,Sale at price 215.22 per share.,MOSES JON J,Director,,2026-06-15,D
+8,8840,1891760,,Sale at price 214.00 per share.,EMERSON DANIEL P,Officer,,2026-06-08,D
+9,1151,249790,,Sale at price 217.02 per share.,DORNEMANN MICHAEL,Director,,2026-06-04,D
+10,249327,56228879,,Sale at price 214.99 - 231.01 per share.,SLATOFF KARL,President,,2026-06-03,D/I
+11,21102,4634210,,Sale at price 219.61 per share.,EMERSON DANIEL P,Officer,,2026-06-02,D
+12,373,85548,,Sale at price 229.35 per share.,SRINIVASAN LAVERNE EVANS,Director,,2026-06-01,D
+13,329949,0,,Stock Award(Grant) at price 0.00 per share.,SLATOFF KARL,President,,2026-06-01,I
+14,38090,0,,Stock Award(Grant) at price 0.00 per share.,EMERSON DANIEL P,Officer,,2026-06-01,D
+15,131,28592,,Sale at price 218.26 per share.,SHERESKY MICHAEL J,Director,,2026-05-29,D
+16,70000,15554130,,Sale at price 221.37 - 224.33 per share.,ZELNICK STRAUSS,Chief Executive Officer,,2026-05-26,I
+17,20000,0,,Stock Gift at price 0.00 per share.,ZELNICK STRAUSS,Chief Executive Officer,,2026-05-26,I
+18,413,85764,,Sale at price 207.66 per share.,SIMINOFF ELLEN F,Director,,2026-04-15,I
+19,116,0,,Stock Award(Grant) at price 0.00 per share.,SIMINOFF ELLEN F,Director,,2026-04-01,D
+20,103,0,,Stock Award(Grant) at price 0.00 per share.,VIERA PAUL E,Director,,2026-04-01,D
+21,91,0,,Stock Award(Grant) at price 0.00 per share.,GORDON WILLIAM BINGHAM,Director,,2026-04-01,D
+22,413,86466,,Sale at price 209.36 per share.,SIMINOFF ELLEN F,Director,,2026-03-16,I
+23,2500,521725,,Sale at price 208.69 per share.,GORDON WILLIAM BINGHAM,Director,,2026-03-09,D
+24,1390,296195,,Sale at price 213.09 per share.,DORNEMANN MICHAEL,Director,,2026-03-05,D
+25,60000,12862211,,Sale at price 214.15 - 215.09 per share.,ZELNICK STRAUSS,Chief Executive Officer,,2026-03-03,I
+26,2508,535637,,Sale at price 213.47 - 213.62 per share.,EMERSON DANIEL P,Officer,,2026-03-02,D
+27,2500,522525,,Sale at price 209.01 per share.,GORDON WILLIAM BINGHAM,Director,,2026-03-02,D
+28,1166,248906,,Sale at price 213.47 per share.,GOLDSTEIN LAINIE,Chief Financial Officer,,2026-03-02,D
+29,155,30183,,Sale at price 194.73 per share.,SHERESKY MICHAEL J,Director,,2026-02-18,D
+30,413,82600,,Sale at price 200.00 per share.,SIMINOFF ELLEN F,Director,,2026-02-18,I
+31,414,101629,,Sale at price 245.48 per share.,SIMINOFF ELLEN F,Director,,2026-01-15,I
+32,96,0,,Stock Award(Grant) at price 0.00 per share.,SIMINOFF ELLEN F,Director,,2025-12-31,D
+33,86,0,,Stock Award(Grant) at price 0.00 per share.,VIERA PAUL E,Director,,2025-12-31,D
+34,84,0,,Stock Award(Grant) at price 0.00 per share.,GORDON WILLIAM BINGHAM,Director,,2025-12-31,D
+35,413,100239,,Sale at price 242.71 per share.,SIMINOFF ELLEN F,Director,,2025-12-15,I
+36,1107,274658,,Sale at price 248.11 per share.,EMERSON DANIEL P,Officer,,2025-12-02,D
+37,1612,399953,,Sale at price 248.11 per share.,GOLDSTEIN LAINIE,Chief Financial Officer,,2025-12-02,D
+38,1350,321664,,Sale at price 238.27 per share.,SRINIVASAN LAVERNE EVANS,Director,,2025-11-18,D
+39,182,42790,,Sale at price 235.11 per share.,SHERESKY MICHAEL J,Director,,2025-11-17,D
+40,414,97683,,Sale at price 235.95 per share.,SIMINOFF ELLEN F,Director,,2025-11-14,I
+41,411,106622,,Sale at price 259.42 per share.,SIMINOFF ELLEN F,Director,,2025-10-15,I
+42,1379,0,,Stock Award(Grant) at price 0.00 per share.,SRINIVASAN LAVERNE EVANS,Director,,2025-10-01,D
+43,967,0,,Stock Award(Grant) at price 0.00 per share.,TOLSON SUSAN,Director,,2025-10-01,D
+44,967,0,,Stock Award(Grant) at price 0.00 per share.,SHERESKY MICHAEL J,Director,,2025-10-01,D
+45,967,0,,Stock Award(Grant) at price 0.00 per share.,MOSES JON J,Director,,2025-10-01,D
+46,1064,0,,Stock Award(Grant) at price 0.00 per share.,SIMINOFF ELLEN F,Director,,2025-10-01,D
+47,967,0,,Stock Award(Grant) at price 0.00 per share.,DORNEMANN MICHAEL,Director,,2025-10-01,D
+48,1054,0,,Stock Award(Grant) at price 0.00 per share.,VIERA PAUL E,Director,,2025-10-01,D
+49,967,0,,Stock Award(Grant) at price 0.00 per share.,HERNANDEZ ROLAND A,Director,,2025-10-01,D
+50,1033,0,,Stock Award(Grant) at price 0.00 per share.,GORDON WILLIAM BINGHAM,Director,,2025-10-01,D
+51,414,101948,,Sale at price 246.25 per share.,SIMINOFF ELLEN F,Director,,2025-09-15,I
+52,10000,2500000,,Sale at price 250.00 per share.,GOLDSTEIN LAINIE,Chief Financial Officer,,2025-09-08,D
+53,1000,239570,,Sale at price 239.57 per share.,MOSES JON J,Director,,2025-09-04,D
+54,1986,474110,,Sale at price 236.83 - 241.00 per share.,EMERSON DANIEL P,Officer,,2025-09-03,D
+55,11579,2773955,,Sale at price 236.83 - 240.00 per share.,GOLDSTEIN LAINIE,Chief Financial Officer,,2025-09-02,D
+56,20000,4612800,,Sale at price 230.64 per share.,GOLDSTEIN LAINIE,Chief Financial Officer,,2025-08-28,D
+57,65000,15017563,,Sale at price 229.57 - 233.55 per share.,ZELNICK STRAUSS,Chief Executive Officer,,2025-08-27,I
+58,20000,0,,Stock Gift at price 0.00 per share.,ZELNICK STRAUSS,Chief Executive Officer,,2025-08-27,I
+59,22479,5113298,,Sale at price 227.47 per share.,EMERSON DANIEL P,Officer,,2025-08-21,D
+60,2325,528868,,Sale at price 227.47 per share.,SRINIVASAN LAVERNE EVANS,Director,,2025-08-21,D
+61,48995,11155031,,Sale at price 226.90 - 228.39 per share.,SLATOFF KARL,President,,2025-08-21,D
+62,198,46227,,Sale at price 233.47 per share.,SHERESKY MICHAEL J,Director,,2025-08-18,D
+63,1000,231330,,Sale at price 231.33 per share.,MOSES JON J,Director,,2025-08-15,D
+64,411,96030,,Sale at price 233.65 per share.,SIMINOFF ELLEN F,Director,,2025-08-15,I
+65,362,0,,Stock Award(Grant) at price 0.00 per share.,SRINIVASAN LAVERNE EVANS,Director,,2025-08-14,D
+66,254,0,,Stock Award(Grant) at price 0.00 per share.,TOLSON SUSAN,Director,,2025-08-14,D
+67,254,0,,Stock Award(Grant) at price 0.00 per share.,SHERESKY MICHAEL J,Director,,2025-08-14,D
+68,254,0,,Stock Award(Grant) at price 0.00 per share.,MOSES JON J,Director,,2025-08-14,D
+69,356,0,,Stock Award(Grant) at price 0.00 per share.,SIMINOFF ELLEN F,Director,,2025-08-14,D
+70,254,0,,Stock Award(Grant) at price 0.00 per share.,DORNEMANN MICHAEL,Director,,2025-08-14,D
+71,346,0,,Stock Award(Grant) at price 0.00 per share.,VIERA PAUL E,Director,,2025-08-14,D
+72,254,0,,Stock Award(Grant) at price 0.00 per share.,HERNANDEZ ROLAND A,Director,,2025-08-14,D
+73,324,0,,Stock Award(Grant) at price 0.00 per share.,GORDON WILLIAM BINGHAM,Director,,2025-08-14,D
+74,414,98449,,Sale at price 237.80 per share.,SIMINOFF ELLEN F,Director,,2025-07-15,I
+75,411,94920,,Sale at price 230.95 per share.,SIMINOFF ELLEN F,Director,,2025-06-16,I
+76,413,94792,,Sale at price 229.52 per share.,SIMINOFF ELLEN F,Director,,2025-06-04,I
+77,27056,6093633,,Sale at price 225.22 per share.,EMERSON DANIEL P,Officer,,2025-06-02,D
+78,200,45106,,Sale at price 225.53 per share.,SHERESKY MICHAEL J,Director,,2025-06-02,D
+79,39729,8947885,,Sale at price 225.22 per share.,GOLDSTEIN LAINIE,Chief Financial Officer,,2025-06-02,D
+80,372577,0,,Stock Award(Grant) at price 0.00 per share.,SLATOFF KARL,President,,2025-06-02,I
+81,372577,0,,Stock Award(Grant) at price 0.00 per share.,ZELNICK STRAUSS,Chief Executive Officer,,2025-06-02,I
+82,216661,48910945,,Sale at price 224.97 - 226.45 per share.,SLATOFF KARL,President,,2025-05-30,I
+83,216661,48910945,,Sale at price 224.97 - 226.45 per share.,ZELNICK STRAUSS,Chief Executive Officer,,2025-05-30,I
+84,45,0,,Stock Gift at price 0.00 per share.,EMERSON DANIEL P,Officer,,2025-05-30,D
+85,135985,0,,Stock Gift at price 0.00 per share.,ZELNICK STRAUSS,Chief Executive Officer,,2025-05-30,D
+86,31035,0,,Stock Award(Grant) at price 0.00 per share.,EMERSON DANIEL P,Officer,,2025-05-30,D
+87,45223,0,,Stock Award(Grant) at price 0.00 per share.,GOLDSTEIN LAINIE,Chief Financial Officer,,2025-05-30,D
+88,373,0,,Stock Award(Grant) at price 0.00 per share.,SRINIVASAN LAVERNE EVANS,Director,,2025-05-28,D
+89,262,0,,Stock Award(Grant) at price 0.00 per share.,TOLSON SUSAN,Director,,2025-05-28,D
+90,262,0,,Stock Award(Grant) at price 0.00 per share.,SHERESKY MICHAEL J,Director,,2025-05-28,D
+91,262,0,,Stock Award(Grant) at price 0.00 per share.,MOSES JON J,Director,,2025-05-28,D
+92,367,0,,Stock Award(Grant) at price 0.00 per share.,SIMINOFF ELLEN F,Director,,2025-05-28,D
+93,262,0,,Stock Award(Grant) at price 0.00 per share.,DORNEMANN MICHAEL,Director,,2025-05-28,D
+94,356,0,,Stock Award(Grant) at price 0.00 per share.,VIERA PAUL E,Director,,2025-05-28,D
+95,262,0,,Stock Award(Grant) at price 0.00 per share.,HERNANDEZ ROLAND A,Director,,2025-05-28,D
+96,334,0,,Stock Award(Grant) at price 0.00 per share.,GORDON WILLIAM BINGHAM,Director,,2025-05-28,D
+97,173,37057,,Sale at price 214.20 per share.,SHERESKY MICHAEL J,Director,,2025-03-06,D
+98,577,121885,,Sale at price 211.24 per share.,EMERSON DANIEL P,Officer,,2025-03-03,D
+99,829,175118,,Sale at price 211.24 per share.,GOLDSTEIN LAINIE,Chief Financial Officer,,2025-03-03,D
+100,33712,7016311,,Sale at price 207.32 - 210.16 per share.,SLATOFF KARL,President,,2025-02-25,D
+101,443,0,,Stock Award(Grant) at price 0.00 per share.,SRINIVASAN LAVERNE EVANS,Director,,2025-02-14,D
+102,310,0,,Stock Award(Grant) at price 0.00 per share.,TOLSON SUSAN,Director,,2025-02-14,D
+103,310,0,,Stock Award(Grant) at price 0.00 per share.,SHERESKY MICHAEL J,Director,,2025-02-14,D
+104,310,0,,Stock Award(Grant) at price 0.00 per share.,MOSES JON J,Director,,2025-02-14,D
+105,435,0,,Stock Award(Grant) at price 0.00 per share.,SIMINOFF ELLEN F,Director,,2025-02-14,D
+106,310,0,,Stock Award(Grant) at price 0.00 per share.,DORNEMANN MICHAEL,Director,,2025-02-14,D
+107,422,0,,Stock Award(Grant) at price 0.00 per share.,VIERA PAUL E,Director,,2025-02-14,D
+108,310,0,,Stock Award(Grant) at price 0.00 per share.,HERNANDEZ ROLAND A,Director,,2025-02-14,D
+109,395,0,,Stock Award(Grant) at price 0.00 per share.,GORDON WILLIAM BINGHAM,Director,,2025-02-14,D
+110,1395,262197,,Sale at price 187.64 - 188.35 per share.,EMERSON DANIEL P,Officer,,2024-12-03,D
+111,1131,212221,,Sale at price 187.64 per share.,GOLDSTEIN LAINIE,Chief Financial Officer,,2024-12-02,D
+112,20000,3694000,,Sale at price 184.70 per share.,ZELNICK STRAUSS,Chief Executive Officer,,2024-11-19,I
+113,363,0,,Stock Award(Grant) at price 0.00 per share.,TOLSON SUSAN,Director,,2024-11-15,D
+114,518,0,,Stock Award(Grant) at price 0.00 per share.,SRINIVASAN LAVERNE EVANS,Director,,2024-11-14,D
+115,363,0,,Stock Award(Grant) at price 0.00 per share.,SHERESKY MICHAEL J,Director,,2024-11-14,D
+116,363,0,,Stock Award(Grant) at price 0.00 per share.,MOSES JON J,Director,,2024-11-14,D
+117,509,0,,Stock Award(Grant) at price 0.00 per share.,SIMINOFF ELLEN F,Director,,2024-11-14,D
+118,363,0,,Stock Award(Grant) at price 0.00 per share.,DORNEMANN MICHAEL,Director,,2024-11-14,D
+119,494,0,,Stock Award(Grant) at price 0.00 per share.,VIERA PAUL E,Director,,2024-11-14,D
+120,463,0,,Stock Award(Grant) at price 0.00 per share.,GORDON WILLIAM BINGHAM,Director,,2024-11-14,D
+121,363,0,,Stock Award(Grant) at price 0.00 per share.,HERNANDEZ ROLAND A,Director,,2024-11-14,D
+122,2000,358340,,Sale at price 179.17 per share.,SRINIVASAN LAVERNE EVANS,Director,,2024-11-08,D
+123,4630,818545,,Sale at price 174.00 - 179.17 per share.,EMERSON DANIEL P,Officer,,2024-11-08,D
+124,25000,4409901,,Sale at price 174.14 - 176.54 per share.,ZELNICK STRAUSS,Chief Executive Officer,,2024-11-08,I
+125,50071,8764907,,Sale at price 173.98 - 178.83 per share.,GOLDSTEIN LAINIE,Chief Financial Officer,,2024-11-08,D
+126,12500,0,,Stock Gift at price 0.00 per share.,ZELNICK STRAUSS,Chief Executive Officer,,2024-11-08,I
+127,790,124931,,Sale at price 158.14 per share.,EMERSON DANIEL P,Officer,,2024-09-03,D
+128,1152,182177,,Sale at price 158.14 per share.,GOLDSTEIN LAINIE,Chief Financial Officer,,2024-09-03,D
+129,191,28618,,Sale at price 149.83 per share.,SHERESKY MICHAEL J,Director,,2024-08-19,D
+130,396,0,,Stock Award(Grant) at price 0.00 per share.,TOLSON SUSAN,Director,,2024-08-16,D
+131,565,0,,Stock Award(Grant) at price 0.00 per share.,SRINIVASAN LAVERNE EVANS,Director,,2024-08-16,D
+132,396,0,,Stock Award(Grant) at price 0.00 per share.,SHERESKY MICHAEL J,Director,,2024-08-16,D
+133,396,0,,Stock Award(Grant) at price 0.00 per share.,MOSES JON J,Director,,2024-08-16,D
+134,556,0,,Stock Award(Grant) at price 0.00 per share.,SIMINOFF ELLEN F,Director,,2024-08-16,D
+135,396,0,,Stock Award(Grant) at price 0.00 per share.,DORNEMANN MICHAEL,Director,,2024-08-16,D
+136,539,0,,Stock Award(Grant) at price 0.00 per share.,VIERA PAUL E,Director,,2024-08-16,D
+137,505,0,,Stock Award(Grant) at price 0.00 per share.,GORDON WILLIAM BINGHAM,Director,,2024-08-16,D
+138,396,0,,Stock Award(Grant) at price 0.00 per share.,HERNANDEZ ROLAND A,Director,,2024-08-16,D

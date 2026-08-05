@@ -5,6 +5,8 @@ differ from the broker / TradingView / MT5 style symbols users often type:
 
     user types        Yahoo wants       why
     ---------------   ---------------   -----------------------------------
+    GENI.US, NVDA.US  GENI, NVDA        EODHD/portfolio ``.US`` suffix is not
+                                        a Yahoo symbol; bare ticker is
     XAUUSD, XAUUSD+   GC=F              gold has no forex pair on Yahoo;
                                         it is quoted as a COMEX future
     EURUSD            EURUSD=X          spot forex pairs take a ``=X`` suffix
@@ -105,11 +107,12 @@ def normalize_symbol(raw: str) -> str:
     """Map a user/broker symbol to its canonical Yahoo Finance symbol.
 
     Resolution order (first match wins):
-      1. Explicit alias table (metals, energy, index CFDs).
-      2. Crypto rule: a known crypto base quoted in USD/USDT/USDC (dashed or
+      1. Strip EODHD/portfolio ``.US`` suffix (Yahoo uses bare US tickers).
+      2. Explicit alias table (metals, energy, index CFDs).
+      3. Crypto rule: a known crypto base quoted in USD/USDT/USDC (dashed or
          not) -> ``BASE-USD``.
-      3. Forex rule: six letters that are two ISO currency codes -> ``PAIR=X``.
-      4. Otherwise the upper-cased symbol is returned unchanged (plain
+      4. Forex rule: six letters that are two ISO currency codes -> ``PAIR=X``.
+      5. Otherwise the upper-cased symbol is returned unchanged (plain
          equities, ETFs, Yahoo-native symbols like ``GC=F`` or ``^GSPC``).
 
     A trailing ``+`` (broker CFD marker, e.g. ``XAUUSD+``) is stripped before
@@ -122,6 +125,10 @@ def normalize_symbol(raw: str) -> str:
     s = raw.strip().upper()
     # Broker CFD/qualifier suffixes Yahoo never uses.
     s = s.rstrip("+")
+    # EODHD / portfolio US suffix (GENI.US -> GENI). Keep other exchange
+    # suffixes (.T, .TO, .HK, .L, …) — Yahoo uses those as-is.
+    if s.endswith(".US"):
+        s = s[:-3]
 
     crypto = _normalize_crypto(s)
     if s in _ALIASES:

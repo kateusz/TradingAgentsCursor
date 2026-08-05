@@ -1,0 +1,8 @@
+# Insider Transactions data for SPCX.US
+# Data retrieved on: 2026-08-05 14:21:39
+
+,Shares,URL,Text,Insider,Position,Transaction,Start Date,Ownership,Value
+0,315926250,,,MUSK ELON REEVE,Chief Executive Officer,,2026-06-15,I,
+1,480,,,MUSK ELON REEVE,Chief Executive Officer,,2026-04-02,I,
+2,11390,,Sale at price 105.32 per share.,MUSK ELON REEVE,Chief Executive Officer,,2026-04-02,I,1199572.0
+3,511368120,,,MUSK ELON REEVE,Chief Executive Officer,,2026-02-02,I,

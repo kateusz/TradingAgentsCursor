@@ -1,0 +1,29 @@
+# Company Fundamentals for TTWO
+# Data retrieved on: 2026-08-05 14:34:27
+
+Name: Take-Two Interactive Software, Inc.
+Sector: Communication Services
+Industry: Electronic Gaming & Multimedia
+Market Cap: 44916445184
+Forward PE: 23.957792
+PEG Ratio: 3.39
+Price to Book: 12.68522
+EPS (TTM): -1.59
+Forward EPS: 10.0268
+Beta: 0.983
+52 Week High: 265.94
+52 Week Low: 187.63
+50 Day Average: 234.3004
+200 Day Average: 229.7085
+Revenue (TTM): 6656399872
+Gross Profit: 3838799872
+EBITDA: 788499968
+Net Income: -298200000
+Profit Margin: -0.0448
+Operating Margin: 0.02328
+Return on Equity: -0.105579995
+Return on Assets: -0.00535
+Debt to Equity: 84.26
+Current Ratio: 1.236
+Book Value: 18.937
+Free Cash Flow: 1447787520

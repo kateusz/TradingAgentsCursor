@@ -1,0 +1,82 @@
+## NVDA.US News, from 2026-07-29 to 2026-08-05:
+
+### Nvidia stock rises, as Musk says SpaceX will exclusively use company's chips (source: Yahoo Finance)
+SpaceX says it will build data centers exclusively using Nvidia's graphics chips.
+Link: https://finance.yahoo.com/technology/article/nvidia-stock-rises-as-musk-says-spacex-will-exclusively-use-companys-chips-211803293.html
+
+### 'This was not an exceptional result': Strategist talks AMD earnings & 'shocking' capex (source: Yahoo Finance Video)
+AMD (AMD) reported second quarter results on Tuesday after the closing bell. Adjusted earnings per share (EPS) came in at $1.66 (compared to analyst estimates of $1.62), and revenue came in at $11.54 billion (compared to analyst estimates of $11.31 billion).Futurum chief market strategist Shay Boloor shares his thoughts with Yahoo Finance's Josh Lipton.
+Link: https://finance.yahoo.com/video/not-exceptional-result-strategist-talks-205254303.html
+
+### Amazon’s AWS CEO Just Sent Shivers Down the Spines of AI Bears. Supply is Mostly ‘Spoken For’ Through 2028. (source: 24/7 Wall St.)
+Amazon’s AI spending is settling a debate between the bulls and the bears. Amazon Web Services (AWS) CEO Matt Garman spent Monday on Bloomberg Technology arguing that AWS’s growth is only getting started. He then went to X and quantified it in a way that undercuts every bear case that AI demand is topping out. ... Amazon’s AWS CEO Just Sent Shivers Down the Spines of AI Bears. Supply is Mostly ‘Spoken For’ Through 2028.
+Link: https://247wallst.com/investing/2026/08/05/amazons-aws-ceo-just-sent-shivers-down-the-spines-of-ai-bears-supply-is-mostly-spoken-for-through-2028/
+
+### Tesla vs. Rocket Lab: Which Is the Better Innovation Stock to Own for the Next 10 Years? (source: Motley Fool)
+Tesla has the bigger name, but I think Rocket Lab is the smarter long-term innovation stock to own today.
+Link: https://www.fool.com/investing/2026/08/05/tesla-vs-rocket-lab-which-is-the-better-innovation/
+
+### Volta secures $10bn AI lab partnership, $5bn infrastructure programme (source: Verdict)
+The company plans to use Nvidia’s DSX platform for future sites and is targeting the deployment of multiple gigawatts of capacity by 2030.
+Link: https://www.verdict.co.uk/volta-secures-ai-lab-partnership/
+
+### Does SanDisk Stock’s 25% Surges Make It a Buy in August? (source: 24/7 Wall St.)
+SanDisk shares have rocketed over 400% this year and traders are piling in ahead of a make-or-break earnings report, but the pre-announcement surge may have already priced in the good news.
+Link: https://247wallst.com/investing/2026/08/05/does-sandisk-stocks-25-surges-make-it-a-buy-in-august/
+
+### Here Are Wednesday’s Top Wall Street Analyst Research Calls: Archer-Daniels Midland, Best Buy, Burlington Stores, Dell Technologies, e.l.f. Beauty, Humana, Transdigm, Vale, and More (source: 24/7 Wall St.)
+Wall Street analysts reshuffled their ratings on Wednesday, sending some familiar names higher while punishing others with sharp target cuts. Find out which stocks got surprise upgrades and which ones analysts are now walking away from.
+Link: https://247wallst.com/investing/2026/08/05/here-are-wednesdays-top-wall-street-analyst-research-calls-archer-daniels-midland-best-buy-burlington-stores-dell-technologies-e-l-f-beauty-humana-transdigm-vale-and-more/
+
+### Disney Beats as Parks and Streaming Carry the Quarter (source: Moby)
+Toy Story 5 cleared $1 billion, ESPN held up, and the CFO used his airtime to needle Universal
+Link: https://app.moby.co/home/news/news-disney-beats-as-parks-and-streaming-carry-the-quarter?utm_source=yahoo_finance&utm_medium=rss
+
+### Mark Zuckerberg Wrote That AI May Soon Deliver "Personal Superintelligence to Everyone" Just Before Meta's Free Cash Flow Cratered 91%. Do Investors Buy the Vision? (source: Motley Fool)
+Superintelligence is a form of artificial intelligence that can surpass the cognitive abilities of humans.
+Link: https://www.fool.com/investing/2026/08/05/mark-zuckerberg-wrote-that-ai-may-soon-deliver-per/
+
+### Brian Niccol’s Turnaround Is Working, and Starbucks Has Rewarded Long-Term Believers (source: 24/7 Wall St.)
+Brian Niccol walked into a struggling Starbucks with a deceptively simple plan, and the numbers are starting to prove the skeptics wrong. Here is what a $10,000 bet at the 2011 logo rebrand looks like today, and whether the rally has more room to run.
+Link: https://247wallst.com/investing/2026/08/05/brian-niccols-turnaround-is-working-and-starbucks-has-rewarded-long-term-believers/
+
+### This Week In AI Chips - AI Efficiency Boost Through Multiverse And Qualcomm Collaboration (source: Simply Wall St.)
+A recent collaboration between Multiverse Computing and Qualcomm Technologies aims to enhance the efficiency of AI operations in data centers globally. This partnership will optimize AI models specifically for Qualcomm's Dragonfly AI200 and AI250 accelerators, focusing on improving performance and reducing power consumption. Live demonstrations have shown significant gains in response times and throughput, without sacrificing accuracy, using compressed AI models in real-world scenarios. As...
+Link: https://finance.yahoo.com/technology/ai/articles/week-ai-chips-ai-efficiency-113756908.html
+
+### Michael Burry warns of 1987-style crash, holds Nvidia shorts (source: Quartz)
+The "Big Short" investor said all his short positions remain profitable except his bet against Nvidia stock
+Link: https://qz.com/michael-burry-1987-crash-warning-nvidia-ai-shorts-080526
+
+### ‘An industrial transformation’: Nvidia CEO Jensen Huang says AI will need '1,000 times more' energy than we have now (source: Moneywise)
+With demand for AI data center power rising in 2026, the U.S. energy sector could be pressed severely,
+Link: https://finance.yahoo.com/energy/articles/industrial-transformation-nvidia-ceo-jensen-113500742.html
+
+### 3 Robotics and Automation Stocks to Buy in August (source: Motley Fool)
+These three automation stocks offer investors different ways to profit from the next wave of robotics growth.
+Link: https://www.fool.com/investing/2026/08/05/3-robotics-and-automation-stocks-to-buy-in-august/
+
+### Is Now the Time for Investors to Pull Money Out of S&P 500 Index Funds? (source: Motley Fool)
+The S&P 500 is flying high, but how long the rally might last is questionable.
+Link: https://www.fool.com/investing/2026/08/05/is-now-the-time-for-investors-to-pull-money-out-of/
+
+### Mark Zuckerberg's Meta Just Suffered an 11-Day Losing Streak That Erased $17.8 Billion From His Net Worth. Is the AI Bet Still Worth It? (source: Motley Fool)
+Investors are increasingly concerned about Meta's AI spending and its impact on the company's cash flow.
+Link: https://www.fool.com/investing/2026/08/05/mark-zuckerbergs-meta-just-suffered-an-11-day-losi/
+
+### Got $500? 2 Magnificent AI Stocks to Buy Hand Over Fist Before the Anthropic IPO (source: Motley Fool)
+Amazon and Alphabet are smart backdoor ways to gain exposure to Anthropic while owning two AI giants built to win (with or without the start-up).
+Link: https://www.fool.com/investing/2026/08/05/magnificent-ai-stocks-buy-anthropic-ipo/
+
+### “A Possible 1987-Type Fall”: Why Michael Burry Refuses to Cover His Bets as Stocks Hit New Highs (source: 24/7 Wall St.)
+While the S&P 500 just hit a record high and the AI trade roars back to life, one famous short seller is keeping his bearish bets intact and warning that the market's own mechanics could turn a celebration into a collapse.
+Link: https://247wallst.com/investing/2026/08/05/a-possible-1987-type-fall-why-michael-burry-refuses-to-cover-his-bets-as-stocks-hit-new-highs/
+
+### Is Super Micro Computer (SMCI) Fully Valued On Its New AI Server Push? (source: Simply Wall St.)
+Super Micro Computer (SMCI) is back in focus after rolling out new high-density AI data center racks and H15 servers, paired with management’s confident AI demand outlook and reinforced ties to Nvidia, AMD, and Intel. See our latest analysis for Super Micro Computer. Those new AI racks and H15 servers have arrived alongside a sharp short-term rebound in Super Micro Computer’s stock, with a 7 day share price return of 23.31% and a 30 day share price return of 16.55%. However, the 1 year total...
+Link: https://finance.yahoo.com/markets/stocks/articles/super-micro-computer-smci-fully-111000886.html
+
+### The Treasury Has Now Refunded $100 Billion Of Tariff Revenue, and Scott Bessent Predicts None of It Is Going to You (source: 24/7 Wall St.)
+The Supreme Court forced Washington to return over a hundred billion dollars in tariff money, but Treasury Secretary Scott Bessent made a bold prediction about where that cash would actually land. Six months later, the numbers are in.
+Link: https://247wallst.com/investing/2026/08/05/the-treasury-has-now-refunded-100-billion-of-tariff-revenue-and-scott-bessent-predicts-none-of-it-is-going-to-you/
+

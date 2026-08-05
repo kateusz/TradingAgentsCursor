@@ -1,0 +1,24 @@
+# Company Fundamentals for SPCX.US
+# Data retrieved on: 2026-08-05 14:21:36
+
+Name: Space Exploration Technologies Corp.
+Sector: Industrials
+Industry: Aerospace & Defense
+Market Cap: 1651120930816
+Forward PE: 137.5575
+Price to Book: 21.042646
+EPS (TTM): -0.74
+Forward EPS: 0.91111
+52 Week High: 225.64
+52 Week Low: 104.83
+50 Day Average: 144.52829
+200 Day Average: 144.52829
+Revenue (TTM): 19300999168
+Gross Profit: 9424000000
+EBITDA: 3950000128
+Net Income: -9356000256
+Profit Margin: -0.44998002
+Operating Margin: -0.41627997
+Debt to Equity: 73.597
+Current Ratio: 1.217
+Book Value: 5.956

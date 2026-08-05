@@ -1,0 +1,88 @@
+# Insider Transactions data for G.US
+# Data retrieved on: 2026-08-05 14:11:52
+
+,Shares,Value,URL,Text,Insider,Position,Transaction,Start Date,Ownership
+0,6521,0,,Stock Award(Grant) at price 0.00 per share.,HINSHAW JOHN M,Director,,2026-04-23,D
+1,6521,0,,Stock Award(Grant) at price 0.00 per share.,LINDSTROM CAROL J,Director,,2026-04-23,D
+2,6521,0,,Stock Award(Grant) at price 0.00 per share.,STEVENS BRIAN MARK,Director,,2026-04-23,D
+3,6521,0,,Stock Award(Grant) at price 0.00 per share.,SUBAIYA THIMAYA K,Director,,2026-04-23,D
+4,6521,0,,Stock Award(Grant) at price 0.00 per share.,MORKEN CECELIA G,Director,,2026-04-23,D
+5,6521,0,,Stock Award(Grant) at price 0.00 per share.,VERDI MARK A,Director,,2026-04-23,D
+6,9999,0,,Stock Award(Grant) at price 0.00 per share.,MADDEN JAMES C V,Director,,2026-04-23,D
+7,6521,0,,Stock Award(Grant) at price 0.00 per share.,GANGESTAD NICHOLAS C.,Director,,2026-04-23,D
+8,6521,0,,Stock Award(Grant) at price 0.00 per share.,CONIGLIARO LAURA,Director,,2026-04-23,D
+9,2800,77420,,Conversion of Exercise of derivative security at price 27.65 per share.,KALRA BALKRISHAN,Chief Executive Officer,,2026-03-04,D
+10,2800,114156,,Sale at price 40.77 per share.,KALRA BALKRISHAN,Chief Executive Officer,,2026-03-04,D
+11,17320,0,,Stock Award(Grant) at price 0.00 per share.,WEINER MICHAEL HAL,Chief Financial Officer,,2026-03-03,D
+12,27160,0,,Stock Award(Grant) at price 0.00 per share.,KALRA BALKRISHAN,Chief Executive Officer,,2026-03-03,D
+13,6928,0,,Stock Award(Grant) at price 0.00 per share.,DEWAN SAMEER,Officer,,2026-03-03,D
+14,13856,0,,Stock Award(Grant) at price 0.00 per share.,NANDURU ANIL,Officer,,2026-03-03,D
+15,13856,0,,Stock Award(Grant) at price 0.00 per share.,VASHISHT RIJU,Officer,,2026-03-03,D
+16,14618,0,,Stock Award(Grant) at price 0.00 per share.,MEHTA PIYUSH,Officer,,2026-03-03,D
+17,35396,0,,Stock Award(Grant) at price 0.00 per share.,WEINER MICHAEL HAL,Chief Financial Officer,,2026-01-30,D
+18,6802,0,,Stock Award(Grant) at price 0.00 per share.,RADESCA ANTHONY J.,Officer,,2026-01-30,D
+19,106575,0,,Stock Award(Grant) at price 0.00 per share.,KALRA BALKRISHAN,Chief Executive Officer,,2026-01-30,D
+20,12471,0,,Stock Award(Grant) at price 0.00 per share.,SCHAUB SYDNEY BRIE,Officer,,2026-01-30,D
+21,16530,0,,Stock Award(Grant) at price 0.00 per share.,DEWAN SAMEER,Officer,,2026-01-30,D
+22,21371,0,,Stock Award(Grant) at price 0.00 per share.,NANDURU ANIL,Officer,,2026-01-30,D
+23,21371,0,,Stock Award(Grant) at price 0.00 per share.,VASHISHT RIJU,Officer,,2026-01-30,D
+24,24716,0,,Stock Award(Grant) at price 0.00 per share.,MEHTA PIYUSH,Officer,,2026-01-30,D
+25,15088,703855,,Sale at price 46.65 per share.,DEWAN SAMEER,Officer,,2026-01-13,D
+26,16016,747146,,Sale at price 46.65 per share.,VASHISHT RIJU,Officer,,2026-01-13,D
+27,63357,0,,Stock Award(Grant) at price 0.00 per share.,SCHAUB SYDNEY BRIE,Officer,,2026-01-06,D
+28,125130,0,,Stock Award(Grant) at price 0.00 per share.,KALRA BALKRISHAN,Chief Executive Officer,,2025-12-17,D
+29,13365,599287,,Sale at price 44.84 per share.,WEINER MICHAEL HAL,Chief Financial Officer,,2025-11-14,D
+30,50054,1386496,,Conversion of Exercise of derivative security at price 27.70 per share.,WHITE HEATHER D,Officer,,2025-11-13,D
+31,51093,2335207,,Sale at price 44.02 - 45.74 per share.,WHITE HEATHER D,Officer,,2025-11-13,D
+32,2750,125538,,Sale at price 45.65 per share.,FRANKLIN TAMARA,Director,,2025-11-12,D
+33,26531,1185936,,Sale at price 44.70 per share.,DEWAN SAMEER,Officer,,2025-11-11,D
+34,20066,0,,Stock Award(Grant) at price 0.00 per share.,RADESCA ANTHONY J.,Officer,,2025-10-10,D
+35,50000,1575000,,Conversion of Exercise of derivative security at price 31.50 per share.,MEHTA PIYUSH,Officer,,2025-09-12,D
+36,76902,3274487,,Sale at price 42.58 per share.,MEHTA PIYUSH,Officer,,2025-09-12,D
+37,40000,1106000,,Conversion of Exercise of derivative security at price 27.65 per share.,KALRA BALKRISHAN,Chief Executive Officer,,2025-09-11,D
+38,55000,2384850,,Sale at price 43.35 - 43.39 per share.,KALRA BALKRISHAN,Chief Executive Officer,,2025-09-11,D
+39,2695,120655,,Sale at price 44.77 per share.,KLUNK DONALD J,Officer,,2025-09-03,D
+40,20078,903510,,Sale at price 45.00 per share.,DEWAN SAMEER,Officer,,2025-08-28,D
+41,27962,1254053,,Sale at price 44.50 - 45.50 per share.,NANDURU ANIL,Officer,,2025-08-22,D
+42,25539,1164517,,Sale at price 45.57 - 45.61 per share.,VASHISHT RIJU,Officer,,2025-08-22,D
+43,2326,100413,,Sale at price 43.17 per share.,LINDSTROM CAROL J,Director,,2025-08-12,D
+44,2020,0,,Stock Award(Grant) at price 0.00 per share.,SUBAIYA THIMAYA K,Director,,2025-08-12,D
+45,2334,0,,Stock Award(Grant) at price 0.00 per share.,HINSHAW JOHN M,Director,,2025-07-01,D
+46,1988,0,,Stock Award(Grant) at price 0.00 per share.,GANGESTAD NICHOLAS C.,Director,,2025-06-30,D
+47,4825,0,,Stock Award(Grant) at price 0.00 per share.,LINDSTROM CAROL J,Director,,2025-05-22,D
+48,4825,0,,Stock Award(Grant) at price 0.00 per share.,AGRAWAL AJAY,Director,,2025-05-22,D
+49,4825,0,,Stock Award(Grant) at price 0.00 per share.,STEVENS BRIAN MARK,Director,,2025-05-22,D
+50,4825,0,,Stock Award(Grant) at price 0.00 per share.,FRANKLIN TAMARA,Director,,2025-05-22,D
+51,4825,0,,Stock Award(Grant) at price 0.00 per share.,MORKEN CECELIA G,Director,,2025-05-22,D
+52,4825,0,,Stock Award(Grant) at price 0.00 per share.,VERDI MARK A,Director,,2025-05-22,D
+53,7582,0,,Stock Award(Grant) at price 0.00 per share.,MADDEN JAMES C V,Director,,2025-05-22,D
+54,4825,0,,Stock Award(Grant) at price 0.00 per share.,GANGESTAD NICHOLAS C.,Director,,2025-05-22,D
+55,4825,0,,Stock Award(Grant) at price 0.00 per share.,CONIGLIARO LAURA,Director,,2025-05-22,D
+56,2000,87940,,Purchase at price 43.97 per share.,GANGESTAD NICHOLAS C.,Director,,2025-05-13,D
+57,13600,376040,,Conversion of Exercise of derivative security at price 27.65 per share.,KALRA BALKRISHAN,Chief Executive Officer,,2025-03-13,D
+58,13600,664904,,Sale at price 48.89 per share.,KALRA BALKRISHAN,Chief Executive Officer,,2025-03-13,D
+59,14587,0,,Stock Award(Grant) at price 0.00 per share.,WEINER MICHAEL HAL,Chief Financial Officer,,2025-03-11,D
+60,7958,0,,Stock Award(Grant) at price 0.00 per share.,WHITE HEATHER D,Officer,,2025-03-11,D
+61,78782,0,,Stock Award(Grant) at price 0.00 per share.,KALRA BALKRISHAN,Chief Executive Officer,,2025-03-11,D
+62,2518,0,,Stock Award(Grant) at price 0.00 per share.,KLUNK DONALD J,Officer,,2025-03-11,D
+63,10759,0,,Stock Award(Grant) at price 0.00 per share.,DEWAN SAMEER,Officer,,2025-03-11,D
+64,14910,0,,Stock Award(Grant) at price 0.00 per share.,NANDURU ANIL,Officer,,2025-03-11,D
+65,14839,0,,Stock Award(Grant) at price 0.00 per share.,VASHISHT RIJU,Officer,,2025-03-11,D
+66,17711,0,,Stock Award(Grant) at price 0.00 per share.,MEHTA PIYUSH,Officer,,2025-03-11,D
+67,108880,5974246,,Sale at price 54.87 per share.,TYAGARAJAN NALLICHERI VYDIANATHAN,Director,,2025-02-18,D
+68,4000,221000,,Sale at price 55.25 per share.,WHITE HEATHER D,Officer,,2025-02-13,D
+69,4916,267430,,Sale at price 54.40 per share.,LINDSTROM CAROL J,Director,,2025-02-11,D
+70,4136,226942,,Sale at price 54.87 per share.,KLUNK DONALD J,Officer,,2025-02-11,D
+71,12000,513960,,Sale at price 42.83 per share.,MEHTA PIYUSH,Officer,,2025-01-10,D
+72,13600,376040,,Conversion of Exercise of derivative security at price 27.65 per share.,KALRA BALKRISHAN,Chief Executive Officer,,2024-12-13,D
+73,13600,606560,,Sale at price 44.60 per share.,KALRA BALKRISHAN,Chief Executive Officer,,2024-12-13,D
+74,9000,417600,,Sale at price 46.40 per share.,KALRA BALKRISHAN,Chief Executive Officer,,2024-11-25,D
+75,2541,118236,,Sale at price 46.52 - 46.54 per share.,WHITE HEATHER D,Officer,,2024-11-22,D
+76,458,20556,,Sale at price 44.88 - 44.89 per share.,KLUNK DONALD J,Officer,,2024-11-18,D
+77,70000,1935500,,Conversion of Exercise of derivative security at price 27.65 per share.,MEHTA PIYUSH,Officer,,2024-11-12,D
+78,70000,3252158,,Sale at price 46.46 per share.,MEHTA PIYUSH,Officer,,2024-11-12,D
+79,3218,149875,,Sale at price 46.57 per share.,LINDSTROM CAROL J,Director,,2024-11-12,D
+80,2000,93400,,Sale at price 46.70 per share.,TYAGARAJAN NALLICHERI VYDIANATHAN,Director,,2024-11-12,I
+81,5163,0,,Stock Award(Grant) at price 0.00 per share.,KLUNK DONALD J,Officer,,2024-09-25,D
+82,7000,269786,,Sale at price 38.54 per share.,KALRA BALKRISHAN,Chief Executive Officer,,2024-09-12,D
+83,800,30003,,Sale at price 37.50 per share.,KLUNK DONALD J,Officer,,2024-08-14,D

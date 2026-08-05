@@ -1,0 +1,443 @@
+## close_50_sma values from 2026-07-06 to 2026-08-05:
+
+2026-08-05: N/A: Not a trading day (weekend or holiday)
+2026-08-04: 309.6106005859375
+2026-08-03: 309.5228002929687
+2026-08-02: N/A: Not a trading day (weekend or holiday)
+2026-08-01: N/A: Not a trading day (weekend or holiday)
+2026-07-31: 309.49940002441406
+2026-07-30: 309.30059997558595
+2026-07-29: 308.58880004882815
+2026-07-28: 307.82960021972656
+2026-07-27: 306.9922003173828
+2026-07-26: N/A: Not a trading day (weekend or holiday)
+2026-07-25: N/A: Not a trading day (weekend or holiday)
+2026-07-24: 306.23140014648436
+2026-07-23: 305.4670001220703
+2026-07-22: 304.88739990234376
+2026-07-21: 304.23059997558596
+2026-07-20: 303.4193084716797
+2026-07-19: N/A: Not a trading day (weekend or holiday)
+2026-07-18: N/A: Not a trading day (weekend or holiday)
+2026-07-17: 302.6324157714844
+2026-07-16: 301.6359844970703
+2026-07-15: 300.5022875976563
+2026-07-14: 299.54993041992185
+2026-07-13: 298.67473571777344
+2026-07-12: N/A: Not a trading day (weekend or holiday)
+2026-07-11: N/A: Not a trading day (weekend or holiday)
+2026-07-10: 297.7269622802734
+2026-07-09: 296.8297784423828
+2026-07-08: 295.8526513671875
+2026-07-07: 295.0010607910156
+2026-07-06: 294.2514270019531
+
+
+50 SMA: A medium-term trend indicator. Usage: Identify trend direction and serve as dynamic support/resistance. Tips: It lags price; combine with faster indicators for timely signals.
+
+## close_200_sma values from 2026-07-06 to 2026-08-05:
+
+2026-08-05: N/A: Not a trading day (weekend or holiday)
+2026-08-04: 278.2467362976074
+2026-08-03: 277.9430191802978
+2026-08-02: N/A: Not a trading day (weekend or holiday)
+2026-08-01: N/A: Not a trading day (weekend or holiday)
+2026-07-31: 277.6612741851807
+2026-07-30: 277.3515307617188
+2026-07-29: 276.9072711181641
+2026-07-28: 276.48293769836425
+2026-07-27: 276.06919776916504
+2026-07-26: N/A: Not a trading day (weekend or holiday)
+2026-07-25: N/A: Not a trading day (weekend or holiday)
+2026-07-24: 275.66342994689944
+2026-07-23: 275.27815925598145
+2026-07-22: 274.95631965637205
+2026-07-21: 274.6088925933838
+2026-07-20: 274.24383941650393
+2026-07-19: N/A: Not a trading day (weekend or holiday)
+2026-07-18: N/A: Not a trading day (weekend or holiday)
+2026-07-17: 273.880447769165
+2026-07-16: 273.48030891418455
+2026-07-15: 273.0877054595947
+2026-07-14: 272.7309322357178
+2026-07-13: 272.414623336792
+2026-07-12: N/A: Not a trading day (weekend or holiday)
+2026-07-11: N/A: Not a trading day (weekend or holiday)
+2026-07-10: 272.09663444519043
+2026-07-09: 271.79682220458983
+2026-07-08: 271.4397592163086
+2026-07-07: 271.0588536834717
+2026-07-06: 270.6971326446533
+
+
+200 SMA: A long-term trend benchmark. Usage: Confirm overall market trend and identify golden/death cross setups. Tips: It reacts slowly; best for strategic trend confirmation rather than frequent trading entries.
+
+## close_10_ema values from 2026-07-06 to 2026-08-05:
+
+2026-08-05: N/A: Not a trading day (weekend or holiday)
+2026-08-04: 320.44744328931216
+2026-08-03: 322.9068740463121
+2026-08-02: N/A: Not a trading day (weekend or holiday)
+2026-08-01: N/A: Not a trading day (weekend or holiday)
+2026-07-31: 327.2372875171072
+2026-07-30: 331.31001726266226
+2026-07-29: 330.8389116153025
+2026-07-28: 329.2053358761683
+2026-07-27: 326.78874683259113
+2026-07-26: N/A: Not a trading day (weekend or holiday)
+2026-07-25: N/A: Not a trading day (weekend or holiday)
+2026-07-24: 324.5395786482537
+2026-07-23: 322.6550430114942
+2026-07-22: 322.87616286691303
+2026-07-21: 322.2064180265743
+2026-07-20: 320.9767353137297
+2026-07-19: N/A: Not a trading day (weekend or holiday)
+2026-07-18: N/A: Not a trading day (weekend or holiday)
+2026-07-17: 319.72934397502723
+2026-07-16: 316.61586702850553
+2026-07-15: 312.917168642479
+2026-07-14: 309.67653945191876
+2026-07-13: 308.52466258533127
+2026-07-12: N/A: Not a trading day (weekend or holiday)
+2026-07-11: N/A: Not a trading day (weekend or holiday)
+2026-07-10: 306.5723659246063
+2026-07-09: 304.62844561358133
+2026-07-08: 302.0525443675543
+2026-07-07: 299.53310652735803
+2026-07-06: 297.0604627196355
+
+
+10 EMA: A responsive short-term average. Usage: Capture quick shifts in momentum and potential entry points. Tips: Prone to noise in choppy markets; use alongside longer averages for filtering false signals.
+
+## macd values from 2026-07-06 to 2026-08-05:
+
+2026-08-05: N/A: Not a trading day (weekend or holiday)
+2026-08-04: 3.113124054100524
+2026-08-03: 4.536517904255675
+2026-08-02: N/A: Not a trading day (weekend or holiday)
+2026-08-01: N/A: Not a trading day (weekend or holiday)
+2026-07-31: 6.8941358334543
+2026-07-30: 9.244054463462987
+2026-07-29: 9.612365477631727
+2026-07-28: 9.457992498087037
+2026-07-27: 8.930950892717533
+2026-07-26: N/A: Not a trading day (weekend or holiday)
+2026-07-25: N/A: Not a trading day (weekend or holiday)
+2026-07-24: 8.451111308822306
+2026-07-23: 8.111810475999505
+2026-07-22: 8.717402314613821
+2026-07-21: 8.932867109079325
+2026-07-20: 8.889584774587775
+2026-07-19: N/A: Not a trading day (weekend or holiday)
+2026-07-18: N/A: Not a trading day (weekend or holiday)
+2026-07-17: 8.822128013121073
+2026-07-16: 7.87970741519797
+2026-07-15: 6.611092846445956
+2026-07-14: 5.482191713426857
+2026-07-13: 5.24854569747356
+2026-07-12: N/A: Not a trading day (weekend or holiday)
+2026-07-11: N/A: Not a trading day (weekend or holiday)
+2026-07-10: 4.624530147704945
+2026-07-09: 3.9634106858973155
+2026-07-08: 2.970296493389583
+2026-07-07: 1.9476614260428846
+2026-07-06: 0.8920423470404444
+
+
+MACD: Computes momentum via differences of EMAs. Usage: Look for crossovers and divergence as signals of trend changes. Tips: Confirm with other indicators in low-volatility or sideways markets.
+
+## macds values from 2026-07-06 to 2026-08-05:
+
+2026-08-05: N/A: Not a trading day (weekend or holiday)
+2026-08-04: 6.635370029061485
+2026-08-03: 7.515931522801725
+2026-08-02: N/A: Not a trading day (weekend or holiday)
+2026-08-01: N/A: Not a trading day (weekend or holiday)
+2026-07-31: 8.260784927438237
+2026-07-30: 8.602447200934222
+2026-07-29: 8.44204538530203
+2026-07-28: 8.149465362219606
+2026-07-27: 7.822333578252748
+2026-07-26: N/A: Not a trading day (weekend or holiday)
+2026-07-25: N/A: Not a trading day (weekend or holiday)
+2026-07-24: 7.5451792496365515
+2026-07-23: 7.318696234840111
+2026-07-22: 7.120417674550261
+2026-07-21: 6.72117151453437
+2026-07-20: 6.16824761589813
+2026-07-19: N/A: Not a trading day (weekend or holiday)
+2026-07-18: N/A: Not a trading day (weekend or holiday)
+2026-07-17: 5.487913326225717
+2026-07-16: 4.654359654501878
+2026-07-15: 3.848022714327854
+2026-07-14: 3.157255181298328
+2026-07-13: 2.5760210482661954
+2026-07-12: N/A: Not a trading day (weekend or holiday)
+2026-07-11: N/A: Not a trading day (weekend or holiday)
+2026-07-10: 1.9078898859643534
+2026-07-09: 1.228729820529205
+2026-07-08: 0.5450596041871769
+2026-07-07: -0.061249618113424775
+2026-07-06: -0.5634773791525023
+
+
+MACD Signal: An EMA smoothing of the MACD line. Usage: Use crossovers with the MACD line to trigger trades. Tips: Should be part of a broader strategy to avoid false positives.
+
+## macdh values from 2026-07-06 to 2026-08-05:
+
+2026-08-05: N/A: Not a trading day (weekend or holiday)
+2026-08-04: -3.5222459749609607
+2026-08-03: -2.97941361854605
+2026-08-02: N/A: Not a trading day (weekend or holiday)
+2026-08-01: N/A: Not a trading day (weekend or holiday)
+2026-07-31: -1.3666490939839377
+2026-07-30: 0.6416072625287654
+2026-07-29: 1.1703200923296961
+2026-07-28: 1.3085271358674309
+2026-07-27: 1.1086173144647846
+2026-07-26: N/A: Not a trading day (weekend or holiday)
+2026-07-25: N/A: Not a trading day (weekend or holiday)
+2026-07-24: 0.905932059185754
+2026-07-23: 0.7931142411593939
+2026-07-22: 1.5969846400635603
+2026-07-21: 2.2116955945449552
+2026-07-20: 2.7213371586896447
+2026-07-19: N/A: Not a trading day (weekend or holiday)
+2026-07-18: N/A: Not a trading day (weekend or holiday)
+2026-07-17: 3.334214686895356
+2026-07-16: 3.225347760696092
+2026-07-15: 2.763070132118102
+2026-07-14: 2.3249365321285294
+2026-07-13: 2.6725246492073644
+2026-07-12: N/A: Not a trading day (weekend or holiday)
+2026-07-11: N/A: Not a trading day (weekend or holiday)
+2026-07-10: 2.716640261740592
+2026-07-09: 2.7346808653681105
+2026-07-08: 2.425236889202406
+2026-07-07: 2.008911044156309
+2026-07-06: 1.4555197261929467
+
+
+MACD Histogram: Shows the gap between the MACD line and its signal. Usage: Visualize momentum strength and spot divergence early. Tips: Can be volatile; complement with additional filters in fast-moving markets.
+
+## rsi values from 2026-07-06 to 2026-08-05:
+
+2026-08-05: N/A: Not a trading day (weekend or holiday)
+2026-08-04: 44.685147494413165
+2026-08-03: 40.34078144122372
+2026-08-02: N/A: Not a trading day (weekend or holiday)
+2026-08-01: N/A: Not a trading day (weekend or holiday)
+2026-07-31: 43.24595007695505
+2026-07-30: 61.662736417088944
+2026-07-29: 66.78996285684315
+2026-07-28: 68.90227901913954
+2026-07-27: 67.29116266174412
+2026-07-26: N/A: Not a trading day (weekend or holiday)
+2026-07-25: N/A: Not a trading day (weekend or holiday)
+2026-07-24: 65.23905796505376
+2026-07-23: 58.11287811116185
+2026-07-22: 62.54637520349954
+2026-07-21: 64.54616479602328
+2026-07-20: 63.879541842646105
+2026-07-19: N/A: Not a trading day (weekend or holiday)
+2026-07-18: N/A: Not a trading day (weekend or holiday)
+2026-07-17: 71.6582743912979
+2026-07-16: 71.44149613942726
+2026-07-15: 68.7805931664622
+2026-07-14: 61.46418741595926
+2026-07-13: 64.17093325718231
+2026-07-12: N/A: Not a trading day (weekend or holiday)
+2026-07-11: N/A: Not a trading day (weekend or holiday)
+2026-07-10: 62.94001683734272
+2026-07-09: 63.86138959866911
+2026-07-08: 62.247730829572916
+2026-07-07: 60.674811676001326
+2026-07-06: 62.44467473803263
+
+
+RSI: Measures momentum to flag overbought/oversold conditions. Usage: Apply 70/30 thresholds and watch for divergence to signal reversals. Tips: In strong trends, RSI may remain extreme; always cross-check with trend analysis.
+
+## boll values from 2026-07-06 to 2026-08-05:
+
+2026-08-05: N/A: Not a trading day (weekend or holiday)
+2026-08-04: 323.84100036621095
+2026-08-03: 323.9050003051758
+2026-08-02: N/A: Not a trading day (weekend or holiday)
+2026-08-01: N/A: Not a trading day (weekend or holiday)
+2026-07-31: 324.3669998168945
+2026-07-30: 324.3529998779297
+2026-07-29: 322.40050048828124
+2026-07-28: 319.95899963378906
+2026-07-27: 317.04199981689453
+2026-07-26: N/A: Not a trading day (weekend or holiday)
+2026-07-25: N/A: Not a trading day (weekend or holiday)
+2026-07-24: 314.38549957275393
+2026-07-23: 311.4919998168945
+2026-07-22: 310.06299896240233
+2026-07-21: 308.4834976196289
+2026-07-20: 306.9469985961914
+2026-07-19: N/A: Not a trading day (weekend or holiday)
+2026-07-18: N/A: Not a trading day (weekend or holiday)
+2026-07-17: 305.51799926757815
+2026-07-16: 303.6285003662109
+2026-07-15: 301.92749938964846
+2026-07-14: 300.37350006103514
+2026-07-13: 299.18700103759767
+2026-07-12: N/A: Not a trading day (weekend or holiday)
+2026-07-11: N/A: Not a trading day (weekend or holiday)
+2026-07-10: 298.1030014038086
+2026-07-09: 296.91600036621094
+2026-07-08: 295.6324996948242
+2026-07-07: 295.0399993896484
+2026-07-06: 294.8739990234375
+
+
+Bollinger Middle: A 20 SMA serving as the basis for Bollinger Bands. Usage: Acts as a dynamic benchmark for price movement. Tips: Combine with the upper and lower bands to effectively spot breakouts or reversals.
+
+## boll_ub values from 2026-07-06 to 2026-08-05:
+
+2026-08-05: N/A: Not a trading day (weekend or holiday)
+2026-08-04: 345.6570000589808
+2026-08-03: 345.54921001452016
+2026-08-02: N/A: Not a trading day (weekend or holiday)
+2026-08-01: N/A: Not a trading day (weekend or holiday)
+2026-07-31: 344.5127190037116
+2026-07-30: 344.54428443257893
+2026-07-29: 346.1370431365223
+2026-07-28: 346.71092100249655
+2026-07-27: 347.0773157521382
+2026-07-26: N/A: Not a trading day (weekend or holiday)
+2026-07-25: N/A: Not a trading day (weekend or holiday)
+2026-07-24: 346.35770536764403
+2026-07-23: 346.67659011408966
+2026-07-22: 345.8255526919915
+2026-07-21: 344.0929073451747
+2026-07-20: 341.6995210203331
+2026-07-19: N/A: Not a trading day (weekend or holiday)
+2026-07-18: N/A: Not a trading day (weekend or holiday)
+2026-07-17: 339.20365527455243
+2026-07-16: 334.7939256362333
+2026-07-15: 329.8256687832267
+2026-07-14: 325.6094128570294
+2026-07-13: 323.7782789006645
+2026-07-12: N/A: Not a trading day (weekend or holiday)
+2026-07-11: N/A: Not a trading day (weekend or holiday)
+2026-07-10: 321.1963137762919
+2026-07-09: 318.68572880755136
+2026-07-08: 315.55899250990274
+2026-07-07: 313.38526977868764
+2026-07-06: 312.67619735514256
+
+
+Bollinger Upper Band: Typically 2 standard deviations above the middle line. Usage: Signals potential overbought conditions and breakout zones. Tips: Confirm signals with other tools; prices may ride the band in strong trends.
+
+## boll_lb values from 2026-07-06 to 2026-08-05:
+
+2026-08-05: N/A: Not a trading day (weekend or holiday)
+2026-08-04: 302.02500067344107
+2026-08-03: 302.26079059583145
+2026-08-02: N/A: Not a trading day (weekend or holiday)
+2026-08-01: N/A: Not a trading day (weekend or holiday)
+2026-07-31: 304.22128063007744
+2026-07-30: 304.1617153232804
+2026-07-29: 298.66395784004015
+2026-07-28: 293.2070782650816
+2026-07-27: 287.0066838816509
+2026-07-26: N/A: Not a trading day (weekend or holiday)
+2026-07-25: N/A: Not a trading day (weekend or holiday)
+2026-07-24: 282.4132937778638
+2026-07-23: 276.3074095196994
+2026-07-22: 274.30044523281316
+2026-07-21: 272.8740878940831
+2026-07-20: 272.1944761720497
+2026-07-19: N/A: Not a trading day (weekend or holiday)
+2026-07-18: N/A: Not a trading day (weekend or holiday)
+2026-07-17: 271.83234326060386
+2026-07-16: 272.4630750961885
+2026-07-15: 274.0293299960702
+2026-07-14: 275.1375872650409
+2026-07-13: 274.59572317453086
+2026-07-12: N/A: Not a trading day (weekend or holiday)
+2026-07-11: N/A: Not a trading day (weekend or holiday)
+2026-07-10: 275.0096890313253
+2026-07-09: 275.1462719248705
+2026-07-08: 275.7060068797457
+2026-07-07: 276.6947290006092
+2026-07-06: 277.0718006917324
+
+
+Bollinger Lower Band: Typically 2 standard deviations below the middle line. Usage: Indicates potential oversold conditions. Tips: Use additional analysis to avoid false reversal signals.
+
+## atr values from 2026-07-06 to 2026-08-05:
+
+2026-08-05: N/A: Not a trading day (weekend or holiday)
+2026-08-04: 9.774944783372447
+2026-08-03: 9.826863143361432
+2026-08-02: N/A: Not a trading day (weekend or holiday)
+2026-08-01: N/A: Not a trading day (weekend or holiday)
+2026-07-31: 9.872007213283464
+2026-07-30: 8.059854485399017
+2026-07-29: 8.018304360928509
+2026-07-28: 8.079712294792
+2026-07-27: 8.140458737089702
+2026-07-26: N/A: Not a trading day (weekend or holiday)
+2026-07-25: N/A: Not a trading day (weekend or holiday)
+2026-07-24: 8.262800308362227
+2026-07-23: 7.917631101313168
+2026-07-22: 8.02360206718942
+2026-07-21: 8.205417329118655
+2026-07-20: 8.268910594219129
+2026-07-19: N/A: Not a trading day (weekend or holiday)
+2026-07-18: N/A: Not a trading day (weekend or holiday)
+2026-07-17: 8.13113467388262
+2026-07-16: 8.295838092306283
+2026-07-15: 8.3270576278022
+2026-07-14: 7.900675473420397
+2026-07-13: 8.093035594723167
+2026-07-12: N/A: Not a trading day (weekend or holiday)
+2026-07-11: N/A: Not a trading day (weekend or holiday)
+2026-07-10: 8.090191803331681
+2026-07-09: 8.34789961632835
+2026-07-08: 8.346199962416108
+2026-07-07: 8.39052153404427
+2026-07-06: 8.625944952828926
+
+
+ATR: Averages true range to measure volatility. Usage: Set stop-loss levels and adjust position sizes based on current market volatility. Tips: It's a reactive measure, so use it as part of a broader risk management strategy.
+
+## vwma values from 2026-07-06 to 2026-08-05:
+
+2026-08-05: N/A: Not a trading day (weekend or holiday)
+2026-08-04: 323.7028427992498
+2026-08-03: 325.0933365067034
+2026-08-02: N/A: Not a trading day (weekend or holiday)
+2026-08-01: N/A: Not a trading day (weekend or holiday)
+2026-07-31: 326.3852843572206
+2026-07-30: 329.5800702343874
+2026-07-29: 328.50782395837257
+2026-07-28: 326.4821850659514
+2026-07-27: 324.5411970791638
+2026-07-26: N/A: Not a trading day (weekend or holiday)
+2026-07-25: N/A: Not a trading day (weekend or holiday)
+2026-07-24: 322.8027292028824
+2026-07-23: 321.37568442707146
+2026-07-22: 319.4798289507252
+2026-07-21: 317.2667712430305
+2026-07-20: 314.0169133819858
+2026-07-19: N/A: Not a trading day (weekend or holiday)
+2026-07-18: N/A: Not a trading day (weekend or holiday)
+2026-07-17: 310.2699176428304
+2026-07-16: 300.72161271624213
+2026-07-15: 296.4190722082856
+2026-07-14: 294.6041021064917
+2026-07-13: 293.9932857596567
+2026-07-12: N/A: Not a trading day (weekend or holiday)
+2026-07-11: N/A: Not a trading day (weekend or holiday)
+2026-07-10: 293.1268386858928
+2026-07-09: 292.82595316661724
+2026-07-08: 292.05485292272147
+2026-07-07: 291.4963815895739
+2026-07-06: 290.8243977687164
+
+
+VWMA: A moving average weighted by volume. Usage: Confirm trends by integrating price action with volume data. Tips: Watch for skewed results from volume spikes; use in combination with other volume analyses.

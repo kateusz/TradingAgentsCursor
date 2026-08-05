@@ -18,6 +18,14 @@ class TestNormalizeSymbol(unittest.TestCase):
         for sym in ("AAPL", "MSFT", "TSM", "BRK.B", "0700.HK", "^GSPC", "GC=F"):
             self.assertEqual(normalize_symbol(sym), sym)
 
+    def test_eodhd_us_suffix_stripped(self):
+        self.assertEqual(normalize_symbol("GENI.US"), "GENI")
+        self.assertEqual(normalize_symbol(" geni.us "), "GENI")
+        self.assertEqual(normalize_symbol("NVDA.US"), "NVDA")
+        # Non-US exchange suffixes must stay (Yahoo uses them).
+        self.assertEqual(normalize_symbol("7203.T"), "7203.T")
+        self.assertEqual(normalize_symbol("CNC.TO"), "CNC.TO")
+
     def test_lowercases_are_upper(self):
         self.assertEqual(normalize_symbol("aapl"), "AAPL")
         self.assertEqual(normalize_symbol("  msft  "), "MSFT")
