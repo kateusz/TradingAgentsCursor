@@ -41,7 +41,7 @@
 
 <div align="center">
 
-🚀 [TradingAgents](#tradingagents-framework) | ⚡ [Installation & CLI](#installation-and-cli) | 🎬 [Demo](https://www.youtube.com/watch?v=90gr5lwjIho) | 📦 [Package Usage](#tradingagents-package) | 🤝 [Contributing](#contributing) | 📄 [Citation](#citation)
+🚀 [TradingAgents](#tradingagents-framework) | ⚡ [Installation & CLI](#installation-and-cli) | 🖥️ [Cursor Hybrid](#cursor-hybrid-analysis) | 🎬 [Demo](https://www.youtube.com/watch?v=90gr5lwjIho) | 📦 [Package Usage](#tradingagents-package) | 🤝 [Contributing](#contributing) | 📄 [Citation](#citation)
 
 </div>
 
@@ -192,6 +192,85 @@ An interface will appear showing results as they load, letting you track the age
 <p align="center">
   <img src="assets/cli/cli_transaction.png" width="100%" style="display: inline-block; margin: 0 2%;">
 </p>
+
+## Cursor Hybrid Analysis
+
+This fork adds a **Cursor-native** workflow: market data is fetched with Python (`yfinance`), and the multi-agent reasoning runs inside **Cursor Composer** via project skills and Task subagents — **no OpenAI/Anthropic API keys** required for the analysis itself.
+
+### Prerequisites
+
+1. [Cursor](https://cursor.com) with an active subscription (Composer access).
+2. This repository opened as the workspace root.
+3. Python dependencies installed (see [Installation](#installation)).
+4. In the chat model picker, select **Composer** (not **Composer Fast**).
+
+The orchestrator skill lives at [`.cursor/skills/analyze-ticker/SKILL.md`](.cursor/skills/analyze-ticker/SKILL.md).
+
+### Quick start
+
+In Cursor Agent chat:
+
+```
+/analyze-ticker NVDA
+/analyze-ticker GENI.US date=2026-08-05
+/analyze-ticker AAPL analysts=market,news,fundamentals
+```
+
+You can also write naturally, e.g. *“analyze GENI.US with Cursor”* — the agent should pick up the `analyze-ticker` skill.
+
+### What happens
+
+1. **Fetch** — `scripts/fetch_bundle.py` downloads OHLCV, indicators, fundamentals, and news into `reports/{TICKER}_{timestamp}/0_data/`.
+2. **Multi-agent analysis** — Cursor launches Task subagents (analysts → bull/bear → research manager → trader → risk → portfolio manager) and writes intermediate markdown under `reports/.../`.
+3. **Stitch** — `scripts/stitch_report.py` builds **`complete_report.md`** (full English analysis).
+4. **Position gate** — the agent asks whether you **already own** the stock or are **considering a new long position** (this changes the next prompt).
+5. **Recommendations** — a final Composer pass reads `complete_report.md` and writes **`recommendations.md`** in Polish (actionable summary, alerts, strategies, technical charts in `reports/.../charts/`).
+
+### Outputs
+
+| File | Description |
+|------|-------------|
+| `reports/{TICKER}_{timestamp}/complete_report.md` | Full multi-agent report (input for step 5) |
+| `reports/{TICKER}_{timestamp}/recommendations.md` | Polish decision brief — **primary deliverable** |
+| `reports/{TICKER}_{timestamp}/charts/*.png` | Candlestick charts referenced in recommendations |
+
+Intermediate folders (`1_analysts/`, `2_research/`, etc.) are kept for debugging but are not the main user-facing result.
+
+### Tickers
+
+Use your portfolio symbols as-is (e.g. `GENI.US`, `NVDA.US`). EODHD-style `.US` suffixes are resolved automatically to Yahoo Finance symbols (`GENI.US` → `GENI`). Other exchange suffixes (`.HK`, `.T`, `.TO`, …) work as in the [Markets and tickers](#markets-and-tickers) section.
+
+### Manual scripts (optional)
+
+From the repo root:
+
+```bash
+# Data only
+python scripts/fetch_bundle.py --ticker GENI.US --date 2026-08-05 --out /tmp/geni_data
+
+# Stitch existing role reports into complete_report.md
+python scripts/stitch_report.py --run-dir reports/GENI.US_20260805_133817
+
+# Technical chart (used by recommendations phase)
+python scripts/plot_technical.py \
+  --stock reports/GENI.US_20260805_133817/0_data/stock.txt \
+  --ticker GENI.US --date 2026-08-05 --current 8.08 \
+  --support 7.20,6.39 --resistance 8.15,9.00 \
+  --out reports/GENI.US_20260805_133817/charts
+```
+
+### Cursor vs CLI
+
+| | **Cursor hybrid** (`/analyze-ticker`) | **CLI** (`tradingagents`) |
+|---|--------------------------------------|---------------------------|
+| LLM | Cursor Composer (subscription) | Your API keys (OpenAI, etc.) |
+| Orchestration | Cursor skill + Task subagents | LangGraph |
+| User deliverable | `recommendations.md` (PL) + `complete_report.md` | CLI UI + decision log |
+| Best for | Interactive analysis in the IDE | Automated runs, API providers, checkpoints |
+
+Both paths share the same `tradingagents.dataflows` layer for market data.
+
+Design notes: [`docs/superpowers/specs/2026-08-05-cursor-hybrid-subagents-design.md`](docs/superpowers/specs/2026-08-05-cursor-hybrid-subagents-design.md)
 
 ## TradingAgents Package
 
