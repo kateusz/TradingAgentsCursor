@@ -20,6 +20,7 @@ Parse from the user message (defaults in parentheses):
 | `ticker` | **required** | Strip whitespace, uppercase (e.g. `NVDA`, `REY.EU`) |
 | `date` | today local `YYYY-MM-DD` | As-of date for data and prompts |
 | `model` | `composer-2.5` | **Always Composer, never Fast** — see Model section |
+| `depth` | `medium` | `shallow` \| `medium` \| `deep` — debate + risk rounds (see Depth section) |
 | `analysts` | `market,social,news,fundamentals` | Comma-separated subset; see mapping below |
 
 **Analyst → role file mapping** (user token → role filename under `roles/`):
@@ -37,9 +38,22 @@ Examples:
 /analyze NVDA
 /analyze NVDA date=2024-05-10 model=composer-2.5
 /analyze REY.EU date=2026-07-01 analysts=market,news,fundamentals
+/analyze NVDA depth=deep
 ```
 
 If `ticker` is missing, ask once and stop.
+
+## Depth
+
+Parse `depth` case-insensitively. Unknown values → treat as `medium`.
+
+| `depth` | Debate rounds (bull ↔ bear) | Risk cycles (aggressive → conservative → neutral) | CLI equivalent |
+|---------|------------------------------|---------------------------------------------------|----------------|
+| `shallow` | 1 | 1 | Shallow |
+| `medium` | 3 | 3 | Medium (default) |
+| `deep` | 5 | 5 | Deep |
+
+Each **debate round** = one bull turn then one bear turn (sequential, alternating). Each **risk cycle** = aggressive → conservative → neutral (sequential). Matches `max_debate_rounds` / `max_risk_discuss_rounds` in the CLI config.
 
 ## Model (required)
 
@@ -127,16 +141,27 @@ For each selected analyst, confirm the expected `1_analysts/*.md` exists and siz
 - Missing or empty: relaunch **that role once** with the same prompt.
 - Still missing or empty after retry: fail the run; tell the user which file is missing. Leave `RUN_DIR` on disk.
 
-### 5. Phase 2 — bull + bear (parallel)
+### 5. Phase 2 — bull ↔ bear debate (sequential rounds)
 
-Launch two Tasks in **one message (parallel)** with the same prompt template:
+Let `DEBATE_ROUNDS` = rounds from the Depth table (`shallow`→1, `medium`→3, `deep`→5).
 
-| Role file | Expected output |
-|-----------|-----------------|
-| `roles/bull.md` | `2_research/bull.md` |
-| `roles/bear.md` | `2_research/bear.md` |
+For `round` = 1 .. `DEBATE_ROUNDS`, launch **two Tasks sequentially** (bull then bear — never parallel):
 
-Verify both outputs exist and size > 0; retry each missing role once; then fail.
+| Step | Role file | Expected output |
+|------|-----------|-----------------|
+| 2a | `roles/bull.md` | append `## Round {round}` to `2_research/bull.md` |
+| 2b | `roles/bear.md` | append `## Round {round}` to `2_research/bear.md` |
+
+Add to each debate Task prompt (fill `{round}`, `{DEBATE_ROUNDS}`, `{side}`):
+
+```
+Debate round {round} of {DEBATE_ROUNDS} ({side}).
+- Round 1: create the output file with a `## Round 1` section.
+- Round > 1: read the opponent file under `2_research/` and append a new `## Round {round}` section; directly refute their latest argument.
+- Do not overwrite prior rounds.
+```
+
+After all rounds, verify `2_research/bull.md` and `2_research/bear.md` exist, each has `DEBATE_ROUNDS` round sections, and size > 0. Retry the failed role for that round once; then fail the run.
 
 ### 6. Phase 3 — research manager (sequential)
 
@@ -158,17 +183,26 @@ Launch one Task:
 
 Verify output; retry once if missing/empty; then fail.
 
-### 8. Phase 5 — risk trio (parallel)
+### 8. Phase 5 — risk discussion (sequential cycles)
 
-Launch three Tasks in **one message (parallel)**:
+Let `RISK_CYCLES` = cycles from the Depth table (same mapping as `DEBATE_ROUNDS`).
 
-| Role file | Expected output |
-|-----------|-----------------|
-| `roles/aggressive.md` | `4_risk/aggressive.md` |
-| `roles/neutral.md` | `4_risk/neutral.md` |
-| `roles/conservative.md` | `4_risk/conservative.md` |
+For `cycle` = 1 .. `RISK_CYCLES`, launch **three Tasks sequentially** in this order (matches LangGraph rotation):
 
-Verify all three; retry each missing role once; then fail.
+1. `roles/aggressive.md` → append `## Cycle {cycle}` to `4_risk/aggressive.md`
+2. `roles/conservative.md` → append `## Cycle {cycle}` to `4_risk/conservative.md`
+3. `roles/neutral.md` → append `## Cycle {cycle}` to `4_risk/neutral.md`
+
+Add to each risk Task prompt:
+
+```
+Risk discussion cycle {cycle} of {RISK_CYCLES}.
+- Cycle 1: create the output file with a `## Cycle 1` section.
+- Cycle > 1: read the other two risk files under `4_risk/` and append `## Cycle {cycle}`; engage their latest arguments.
+- Do not overwrite prior cycles.
+```
+
+After all cycles, verify all three risk files exist, each has `RISK_CYCLES` cycle sections, and size > 0. Retry the failed role for that cycle once; then fail.
 
 ### 9. Phase 6 — portfolio manager (sequential)
 
@@ -245,7 +279,7 @@ Do not dump intermediate analyst files unless the user asks.
 - Do not skip fetch.
 - Subagent prompts must include absolute paths (`REPO_ROOT`, `RUN_DIR`, role file).
 - Use `subagent_type: generalPurpose` for every Task that writes a report file.
-- v1 debate = one bull + one bear pass (no multi-round loop).
+- Default `depth=medium` (3 debate rounds + 3 risk cycles). Use `depth=shallow` for a faster run.
 - Skipped analysts: omit their files; later roles tolerate missing analyst sections.
 - Partial run dirs stay on disk for debugging (no auto-delete).
 - **User deliverable:** `recommendations.md` (+ charts). `complete_report.md` is input to that step.

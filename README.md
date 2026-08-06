@@ -214,14 +214,25 @@ In Cursor Agent chat:
 /analyze-ticker NVDA
 /analyze-ticker GENI.US date=2026-08-05
 /analyze-ticker AAPL analysts=market,news,fundamentals
+/analyze-ticker NVDA depth=medium
+/analyze-ticker NVDA depth=shallow
+/analyze-ticker NVDA depth=deep
 ```
+
+| Parameter | Default | Values |
+|-----------|---------|--------|
+| `ticker` | *(required)* | e.g. `NVDA`, `GENI.US` |
+| `date` | today | `YYYY-MM-DD` |
+| `depth` | `medium` | `shallow` (1 debate + 1 risk cycle), `medium` (3+3), `deep` (5+5) |
+| `analysts` | all four | comma-separated: `market`, `social`, `news`, `fundamentals` |
+| `model` | `composer-2.5` | always Composer — Fast variants are ignored |
 
 You can also write naturally, e.g. *“analyze GENI.US with Cursor”* — the agent should pick up the `analyze-ticker` skill.
 
 ### What happens
 
 1. **Fetch** — `scripts/fetch_bundle.py` downloads OHLCV, indicators, fundamentals, and news into `reports/{TICKER}_{timestamp}/0_data/`.
-2. **Multi-agent analysis** — Cursor launches Task subagents (analysts → bull/bear → research manager → trader → risk → portfolio manager) and writes intermediate markdown under `reports/.../`.
+2. **Multi-agent analysis** — Cursor launches Task subagents (analysts → bull/bear debate → research manager → trader → risk discussion → portfolio manager). Debate and risk depth follow `depth` (default **medium**: 3 bull/bear rounds + 3 risk cycles). Intermediate markdown lands under `reports/.../`.
 3. **Stitch** — `scripts/stitch_report.py` builds **`complete_report.md`** (full English analysis).
 4. **Position gate** — the agent asks whether you **already own** the stock or are **considering a new long position** (this changes the next prompt).
 5. **Recommendations** — a final Composer pass reads `complete_report.md` and writes **`recommendations.md`** in Polish (actionable summary, alerts, strategies, technical charts in `reports/.../charts/`).

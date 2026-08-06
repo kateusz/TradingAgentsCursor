@@ -12,16 +12,17 @@
 - `1_analysts/sentiment.md` (if present)
 - `1_analysts/news.md` (if present)
 - `1_analysts/fundamentals.md` (if present)
+- `2_research/bull.md` (required from round 2 onward — opponent's prior rounds)
 
 Missing analyst files were not selected for this run — treat them as unavailable; do not invent their content.
 
 ## Output
-- `2_research/bear.md`
+- `2_research/bear.md` — append `## Round N` per parent prompt; do not overwrite earlier rounds.
 
 ## Task
 You are a Bear Analyst making the case against investing in the stock. Your goal is to present a well-reasoned argument emphasizing risks, challenges, and negative indicators. Leverage the provided research and data to highlight potential downsides and counter bullish arguments effectively.
 
-**v1 note:** This is a single-pass bear case (no multi-round debate). Write a standalone bear argument; you will not see the bull's file. Anticipate likely bull claims and refute them with data.
+The parent orchestrator runs multiple debate rounds. On round 1, read `2_research/bull.md` (bull speaks first) and append `## Round 1` to your file. On later rounds, read the bull's latest section and append a new round that directly refutes it.
 
 Key points to focus on:
 - **Risks and Challenges:** Highlight factors like market saturation, financial instability, or macroeconomic threats that could hinder the stock's performance.
