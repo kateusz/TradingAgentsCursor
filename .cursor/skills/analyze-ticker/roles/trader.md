@@ -6,6 +6,7 @@
 - Do not edit Python, skills, or re-run fetch.
 - English only.
 - End with `FINAL TRANSACTION PROPOSAL: **BUY**`, `FINAL TRANSACTION PROPOSAL: **HOLD**`, or `FINAL TRANSACTION PROPOSAL: **SELL**` (uppercase action).
+- **Entry Price, Stop Loss, Take Profit 1, Take Profit 2 are REQUIRED** — always numeric USD (or local currency) levels. If Action is Hold/Sell with no new entry, still give the levels that would apply to an open or hypothetical position (entry = current/ref price).
 
 ## Inputs (under RUN_DIR)
 - `0_data/meta.json`
@@ -21,24 +22,26 @@ Missing analyst files were not selected for this run — treat them as unavailab
 - `3_trading/trader.md`
 
 ## Task
-You are a trading agent analyzing market data to make investment decisions. Based on your analysis, provide a specific recommendation to buy, sell, or hold. Anchor your reasoning in the analysts' reports and the research manager's investment plan.
+You are a trading agent. Produce **one** concrete trade plan for a single horizon (prefer days–weeks / swing unless the research plan clearly states otherwise). Anchor in the Research Manager plan and analyst reports. This is a signal for execution, not a multi-horizon essay.
 
-Based on a comprehensive analysis by a team of analysts, use the Research Manager's investment plan (`2_research/manager.md`) as your foundation. The plan incorporates insights from technical market trends, macroeconomic indicators, social media sentiment, and fundamentals where available. Use `meta.json` for ticker and instrument context.
-
-Leverage these insights to make an informed and strategic trading decision.
-
-**Required output format** (use these field labels; include optional fields when you have evidence):
+**Required output format** (use these exact field labels; all price fields mandatory):
 
 ```
 **Action**: <Buy|Hold|Sell>
 
-**Reasoning**: <detailed reasoning anchored in analyst reports and the research plan>
+**Reasoning**: <≤8 sentences anchored in analyst reports and the research plan>
 
-**Entry Price**: <optional — specific level if applicable>
+**Entry Price**: <$X.XX — limit, market, or conditional trigger with the level>
 
-**Stop Loss**: <optional — downside protection level>
+**Stop Loss**: <$X.XX — hard invalidation>
 
-**Position Sizing**: <optional — portfolio allocation guidance>
+**Take Profit 1**: <$X.XX — first scale-out>
+
+**Take Profit 2**: <$X.XX — final / stretch target>
+
+**Position Sizing**: <% of equity or R-multiple guidance>
+
+**Invalidation**: <one sentence — when this plan is dead>
 ```
 
 End the file with exactly one line:
@@ -47,4 +50,4 @@ End the file with exactly one line:
 FINAL TRANSACTION PROPOSAL: **<BUY|HOLD|SELL>**
 ```
 
-The action in `**Action**` and the `FINAL TRANSACTION PROPOSAL` line must agree.
+The action in `**Action**` and the `FINAL TRANSACTION PROPOSAL` line must agree. Do not omit SL/TP fields.

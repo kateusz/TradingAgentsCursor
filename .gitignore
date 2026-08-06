@@ -218,5 +218,8 @@ __marimo__/
 # Cache
 **/data_cache/
 
+# Personal portfolio memory (local only)
+portfolio/holdings.json
+
 # Enterprise env file (secrets)
 .env.enterprise

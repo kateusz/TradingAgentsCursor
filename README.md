@@ -217,33 +217,70 @@ In Cursor Agent chat:
 /analyze-ticker NVDA depth=medium
 /analyze-ticker NVDA depth=shallow
 /analyze-ticker NVDA depth=deep
+/analyze-ticker NVDA horizon=swing
+/analyze-ticker GENI.US horizon=position
+/analyze-portfolio
+/analyze-portfolio depth=shallow
+/analyze-portfolio tickers=GENI.US,TTWO.US
 ```
 
 | Parameter | Default | Values |
 |-----------|---------|--------|
-| `ticker` | *(required)* | e.g. `NVDA`, `GENI.US` |
+| `ticker` | *(required for `/analyze-ticker`)* | e.g. `NVDA`, `GENI.US` |
 | `date` | today | `YYYY-MM-DD` |
 | `depth` | `medium` | `shallow` (1 debate + 1 risk cycle), `medium` (3+3), `deep` (5+5) |
+| `horizon` | `swing` | `swing` (days–weeks) \| `position` (weeks–months) — **one** ticket horizon |
 | `analysts` | all four | comma-separated: `market`, `social`, `news`, `fundamentals` |
 | `model` | `composer-2.5` | always Composer — Fast variants are ignored |
+| `tickers` | all owned (`/analyze-portfolio`) | comma filter of owned symbols |
 
-You can also write naturally, e.g. *“analyze GENI.US with Cursor”* — the agent should pick up the `analyze-ticker` skill.
+You can also write naturally, e.g. *“analyze GENI.US with Cursor”* or *“re-analyze my holdings”* — the agent should pick up `analyze-ticker` or `analyze-portfolio`.
+
+### Portfolio batch (`/analyze-portfolio`)
+
+Skill: [`.cursor/skills/analyze-portfolio/SKILL.md`](.cursor/skills/analyze-portfolio/SKILL.md).
+
+1. Reads `portfolio/holdings.json` for `status=owned`.
+2. Launches **one Task subagent per ticker** (parallel), each running the full `/analyze-ticker` pipeline as an existing holder.
+3. Skips “czy posiadasz?” / “czy kupujesz?”; updates memory with `event=reanalyzed` and refreshed SL/TP from each ticket.
+4. Parent returns a summary table of werdykty + paths.
 
 ### What happens
 
 1. **Fetch** — `scripts/fetch_bundle.py` downloads OHLCV, indicators, fundamentals, and news into `reports/{TICKER}_{timestamp}/0_data/`.
-2. **Multi-agent analysis** — Cursor launches Task subagents (analysts → bull/bear debate → research manager → trader → risk discussion → portfolio manager). Debate and risk depth follow `depth` (default **medium**: 3 bull/bear rounds + 3 risk cycles). Intermediate markdown lands under `reports/.../`.
-3. **Stitch** — `scripts/stitch_report.py` builds **`complete_report.md`** (full English analysis).
-4. **Position gate** — the agent asks whether you **already own** the stock or are **considering a new long position** (this changes the next prompt).
-5. **Recommendations** — a final Composer pass reads `complete_report.md` and writes **`recommendations.md`** in Polish (actionable summary, alerts, strategies, technical charts in `reports/.../charts/`).
+2. **Multi-agent analysis** — Cursor launches Task subagents (analysts → bull/bear debate → research manager → trader → risk → portfolio manager). Trader and PM must emit **Entry / Stop Loss / TP1 / TP2**. Debate depth follows `depth` (default **medium**).
+3. **Stitch** — `scripts/stitch_report.py` builds **`complete_report.md`** (English research archive).
+4. **Gates** — position (new long vs already own) and horizon (`swing` vs `position`) if not already in the command. Skipped when memory says `owned` or under `/analyze-portfolio`.
+5. **Trade ticket** — a short Polish **`recommendations.md`** compressed from trader + PM (not a second research report), plus one chart in `charts/`.
+6. **Portfolio memory** — after the ticket, the agent asks whether you **bought** (new) or **hold/add/exit** (existing) and writes `portfolio/holdings.json` so the next run remembers ownership. Portfolio batch uses `reanalyzed` instead of asking.
+
+### Portfolio memory
+
+Personal holdings live in `portfolio/holdings.json` (**gitignored**). Example schema: [`portfolio/holdings.example.json`](portfolio/holdings.example.json).
+
+```bash
+# Is this ticker owned?
+python scripts/portfolio_memory.py get --ticker GENI.US
+
+# List open positions
+python scripts/portfolio_memory.py list --status owned
+
+# Manual update
+python scripts/portfolio_memory.py set \
+  --ticker GENI.US --status owned --event bought \
+  --entry 7.30 --stop-loss 6.39 --tp1 9 --tp2 10 --horizon swing
+```
+
+Statuses: `owned` | `watching` | `closed`. When `owned`, `/analyze-ticker` skips “czy już posiadasz?” and uses the holder ticket.
 
 ### Outputs
 
 | File | Description |
 |------|-------------|
-| `reports/{TICKER}_{timestamp}/complete_report.md` | Full multi-agent report (input for step 5) |
-| `reports/{TICKER}_{timestamp}/recommendations.md` | Polish decision brief — **primary deliverable** |
-| `reports/{TICKER}_{timestamp}/charts/*.png` | Candlestick charts referenced in recommendations |
+| `reports/{TICKER}_{timestamp}/recommendations.md` | Polish **trade ticket** (werdykt, wejście, SL, TP1, TP2) — **primary deliverable** |
+| `reports/{TICKER}_{timestamp}/complete_report.md` | Full multi-agent English report (deep dive) |
+| `reports/{TICKER}_{timestamp}/charts/*.png` | Candlestick chart with SL/TP levels |
+| `portfolio/holdings.json` | Your remembered positions (local, not committed) |
 
 Intermediate folders (`1_analysts/`, `2_research/`, etc.) are kept for debugging but are not the main user-facing result.
 
@@ -272,11 +309,11 @@ python scripts/plot_technical.py \
 
 ### Cursor vs CLI
 
-| | **Cursor hybrid** (`/analyze-ticker`) | **CLI** (`tradingagents`) |
+| | **Cursor hybrid** (`/analyze-ticker`, `/analyze-portfolio`) | **CLI** (`tradingagents`) |
 |---|--------------------------------------|---------------------------|
 | LLM | Cursor Composer (subscription) | Your API keys (OpenAI, etc.) |
 | Orchestration | Cursor skill + Task subagents | LangGraph |
-| User deliverable | `recommendations.md` (PL) + `complete_report.md` | CLI UI + decision log |
+| User deliverable | Short PL **trade ticket** (SL/TP) + `complete_report.md` | CLI UI + decision log |
 | Best for | Interactive analysis in the IDE | Automated runs, API providers, checkpoints |
 
 Both paths share the same `tradingagents.dataflows` layer for market data.

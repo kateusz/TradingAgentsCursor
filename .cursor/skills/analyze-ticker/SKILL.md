@@ -9,7 +9,9 @@ description: >-
 
 # Analyze Ticker (Cursor Hybrid)
 
-Orchestrate analysis → `complete_report.md` → (after user confirms position status) Polish `recommendations.md`.
+Orchestrate analysis → `complete_report.md` → (after position + horizon gates) Polish **trade ticket** `recommendations.md` (Entry / SL / TP1 / TP2).
+
+For **all owned positions** at once, use sibling skill [`analyze-portfolio`](../analyze-portfolio/SKILL.md) (`/analyze-portfolio`).
 
 ## Inputs
 
@@ -21,6 +23,7 @@ Parse from the user message (defaults in parentheses):
 | `date` | today local `YYYY-MM-DD` | As-of date for data and prompts |
 | `model` | `composer-2.5` | **Always Composer, never Fast** — see Model section |
 | `depth` | `medium` | `shallow` \| `medium` \| `deep` — debate + risk rounds (see Depth section) |
+| `horizon` | `swing` | `swing` (dni–tygodnie) \| `position` (tygodnie–miesiące) — one only |
 | `analysts` | `market,social,news,fundamentals` | Comma-separated subset; see mapping below |
 
 **Analyst → role file mapping** (user token → role filename under `roles/`):
@@ -39,9 +42,22 @@ Examples:
 /analyze NVDA date=2024-05-10 model=composer-2.5
 /analyze REY.EU date=2026-07-01 analysts=market,news,fundamentals
 /analyze NVDA depth=deep
+/analyze NVDA horizon=swing
+/analyze NVDA horizon=position
 ```
 
 If `ticker` is missing, ask once and stop.
+
+## Horizon
+
+Parse `horizon` case-insensitively. Unknown → `swing`.
+
+| `horizon` | Meaning | Pass to recommendations as |
+|-----------|---------|------------------------------|
+| `swing` | Days–weeks (default) | `{HORIZON}=swing` |
+| `position` | Weeks–months | `{HORIZON}=position` |
+
+Never produce multi-horizon strategies in one ticket.
 
 ## Depth
 
@@ -75,6 +91,7 @@ Use absolute paths in all subagent prompts. Resolve from workspace root:
 - `REPO_ROOT` = absolute path to this repository (e.g. `/Users/.../TradingAgents`)
 - `SKILL_DIR` = `{REPO_ROOT}/.cursor/skills/analyze-ticker`
 - `ROLES_DIR` = `{SKILL_DIR}/roles`
+- `HOLDINGS` = `{REPO_ROOT}/portfolio/holdings.json` (personal memory; gitignored)
 
 ## Steps
 
@@ -224,53 +241,120 @@ python scripts/stitch_report.py --run-dir RUN_DIR
 
 Confirm `RUN_DIR/complete_report.md` exists and is non-empty.
 
-**End of analysis pipeline.** Intermediate files (`1_analysts/`, etc.) are internal; the user-facing analysis artifact is **`complete_report.md` only**.
+**End of English analysis pipeline.** Intermediate files are internal. Deep-dive archive = `complete_report.md`. User-facing action = Phase 12 **trade ticket**.
 
-### 11. Ask position status (mandatory gate — do not skip)
+### 11. Gates before recommendations (mandatory — do not skip)
 
-Before recommendations, **ask the user exactly once**:
+#### 11.0 Read portfolio memory
 
-> Czy **rozważasz kupno** tych akcji (nie masz pozycji), czy **już je posiadasz**?
+From `REPO_ROOT`:
 
-Use `AskQuestion` with:
-- `Rozważam kupno (brak pozycji)`
-- `Już posiadam akcje`
+```bash
+python scripts/portfolio_memory.py get --ticker TICKER
+```
 
-**Do not** launch Phase 12 until the user answers.
+| Result `status` | Effect |
+|-----------------|--------|
+| `owned` | Skip position question. Use `recommendations-existing-position.md`. Tell the user you remembered they own it (show entry/SL if present). |
+| `watching` / `closed` / `unknown` | Ask position status as below (unless user already stated it). |
 
-| Answer | Role file |
-|--------|-----------|
-| Rozważam kupno | `roles/recommendations-new-position.md` |
-| Już posiadam | `roles/recommendations-existing-position.md` |
+#### 11.A Position status
 
-If the user already stated their status in the same message (e.g. „nie mam GENI"), skip re-asking and use the matching role.
+Ask **once** only if memory is not `owned` and user did not already say:
 
-### 12. Recommendations (sequential Task)
+> Czy **rozważasz kupno** (brak pozycji), czy **już posiadasz**?
+
+| Answer | Role file | Memory write (immediate) |
+|--------|-----------|---------------------------|
+| Rozważam kupno | `recommendations-new-position.md` | none yet (wait until after ticket) |
+| Już posiadam | `recommendations-existing-position.md` | `set --status owned --event marked_owned --run-dir RUN_DIR` |
+
+```bash
+python scripts/portfolio_memory.py set --ticker TICKER --status owned --event marked_owned --run-dir RUN_DIR --horizon HORIZON
+```
+
+#### 11.B Horizon (skip if `horizon=` already parsed)
+
+> Jaki **horyzont** dla ticketu?
+
+| Answer | `HORIZON` value |
+|--------|-----------------|
+| Swing (dni–tygodnie) | `swing` |
+| Pozycja (tygodnie–miesiące) | `position` |
+
+Default if user declines: `swing`. Prefer one `AskQuestion` covering A+B when both unknown.
+
+**Do not** launch Phase 12 until position status is known.
+
+### 12. Recommendations — trade ticket (sequential Task)
 
 Launch **one** Task (`model: composer-2.5`, `subagent_type: generalPurpose`):
 
 ```
 REPO_ROOT: {REPO_ROOT}
 RUN_DIR: {RUN_DIR}
+HORIZON: {swing|position}
 Role instructions: {ROLES_DIR}/recommendations-{new-position|existing-position}.md
 
-Read complete_report.md from RUN_DIR. Write RUN_DIR/recommendations.md in Polish per role file.
-Generate charts to RUN_DIR/charts/ via scripts/plot_technical.py.
+Primary inputs: 3_trading/trader.md and 5_portfolio/decision.md.
+If HOLDINGS has this ticker as owned, pass entry/SL into the prompt.
+Compress into a short Polish trade ticket (Entry / SL / TP1 / TP2) per role file.
+Do NOT re-analyze complete_report.md — only fill missing numbers if needed.
+Generate one chart to RUN_DIR/charts/ via scripts/plot_technical.py.
 Do not edit complete_report.md.
 ```
 
 Verify `RUN_DIR/recommendations.md` exists and size > 0; retry once if missing.
+Confirm the file contains **Stop-loss** and **TP1** / **TP2** (or table equivalents); if missing, retry once with an explicit reminder to include numeric levels from trader/PM.
 
-### 13. Reply to user
+### 13. Reply to user (ticket)
 
 Include **only**:
 
-1. Absolute path to `RUN_DIR/recommendations.md` (primary deliverable)
-2. Absolute path to `RUN_DIR/complete_report.md` (source analysis)
-3. One-line **WERDYKT KOŃCOWY** excerpt from `recommendations.md`
-4. Paths to chart PNGs in `RUN_DIR/charts/` if generated
+1. The full contents of `RUN_DIR/recommendations.md` (the trade ticket — primary deliverable)
+2. Absolute path to `RUN_DIR/recommendations.md`
+3. Absolute path to `RUN_DIR/complete_report.md` (deep-dive archive — do not paste it)
+4. Chart path(s) if generated
 
 Do not dump intermediate analyst files unless the user asks.
+
+### 14. Persist action (mandatory after ticket)
+
+Parse numeric **Wejście / Entry**, **Stop-loss**, **TP1**, **TP2** from `recommendations.md` when present.
+
+**If role was new-position** (user did not own):
+
+Ask once:
+
+> Czy **kupujesz** według tego ticketu?
+
+| Answer | Command |
+|--------|---------|
+| Tak / kupuję | `set --status owned --event bought --entry … --stop-loss … --tp1 … --tp2 … --horizon … --run-dir RUN_DIR` |
+| Nie | `set --status watching --event skipped --run-dir RUN_DIR --horizon …` |
+
+**If role was existing-position** (owned / remembered):
+
+Ask once (skip if user already said exit/reduce/hold in chat):
+
+> Co robisz z pozycją po tym tickecie?
+
+| Answer | Command |
+|--------|---------|
+| Trzymam / Hold | `set --status owned --event hold --stop-loss … --tp1 … --tp2 … --run-dir RUN_DIR` (keep prior `--entry` if not updating) |
+| Dokupuję | `set --status owned --event added --entry … --stop-loss … --tp1 … --tp2 … --run-dir RUN_DIR` |
+| Redukuję / wychodzę | `set --status closed --event exited --run-dir RUN_DIR` |
+
+Example:
+
+```bash
+python scripts/portfolio_memory.py set \
+  --ticker TICKER --status owned --event bought \
+  --entry 7.30 --stop-loss 6.39 --tp1 9.00 --tp2 10.00 \
+  --horizon swing --run-dir RUN_DIR
+```
+
+Confirm to the user that memory was updated (`portfolio/holdings.json`). Next `/analyze-ticker TICKER` skips the own/buy question when `status=owned`.
 
 ## Constraints
 
@@ -280,7 +364,10 @@ Do not dump intermediate analyst files unless the user asks.
 - Subagent prompts must include absolute paths (`REPO_ROOT`, `RUN_DIR`, role file).
 - Use `subagent_type: generalPurpose` for every Task that writes a report file.
 - Default `depth=medium` (3 debate rounds + 3 risk cycles). Use `depth=shallow` for a faster run.
+- Default `horizon=swing`. One horizon per ticket.
+- Trader + Portfolio Manager must emit numeric Entry / SL / TP1 / TP2.
 - Skipped analysts: omit their files; later roles tolerate missing analyst sections.
 - Partial run dirs stay on disk for debugging (no auto-delete).
-- **User deliverable:** `recommendations.md` (+ charts). `complete_report.md` is input to that step.
-- **Gate:** always ask buy vs own before Phase 12 unless user already clarified.
+- **User deliverable:** short Polish **trade ticket** in `recommendations.md` (+ chart). `complete_report.md` is the English research archive.
+- **Gates:** position status required before Phase 12; ask horizon if not in the command.
+- **Memory:** read/write `portfolio/holdings.json` via `scripts/portfolio_memory.py` (never invent ownership).

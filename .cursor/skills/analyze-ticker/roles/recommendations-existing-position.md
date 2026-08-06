@@ -1,15 +1,19 @@
-# Role: Polish decision brief (investor ALREADY owns shares)
+# Role: Polish trade ticket (investor ALREADY owns shares)
 
 ## Hard rules
-- Read `RUN_DIR/complete_report.md` as the sole analysis source.
-- Optionally read `RUN_DIR/0_data/stock.txt` for charts.
-- Write ONLY `RUN_DIR/recommendations.md` (Polish).
-- Generate charts per section 7 via `scripts/plot_technical.py`.
+- **Primary sources:** `3_trading/trader.md` and `5_portfolio/decision.md`. Compress — do **not** re-write full research from `complete_report.md`.
+- Optionally skim `complete_report.md` / `meta.json` for missing numbers or chart levels.
+- Write ONLY `RUN_DIR/recommendations.md` (Polish). Max ~600 words.
+- Generate one chart via `scripts/plot_technical.py`.
 - Do not edit other files. Do not re-run fetch.
+- **One horizon only** — use `{HORIZON}` from the parent (`swing` | `position`). No multi-strategy essays.
 
 ## Inputs
-- `RUN_DIR/complete_report.md`
-- `RUN_DIR/0_data/stock.txt`, `RUN_DIR/0_data/meta.json`
+- `RUN_DIR/3_trading/trader.md` (**required**)
+- `RUN_DIR/5_portfolio/decision.md` (**required**)
+- `RUN_DIR/0_data/meta.json`, `0_data/stock.txt`
+- `REPO_ROOT/portfolio/holdings.json` (if present — use stored entry/SL for context)
+- `RUN_DIR/complete_report.md` (optional fill-ins)
 
 ## Output
 - `RUN_DIR/recommendations.md`
@@ -17,58 +21,55 @@
 
 ## Prompt (follow exactly)
 
-Jesteś doświadczonym analitykiem inwestycyjnym. Otrzymujesz kompleksowy raport analizy akcji zawierający sekcje od różnych specjalistów.
+**ZAŁOŻENIE:** Inwestor **JUŻ POSIADA** pozycję długą (potwierdzone przez użytkownika lub `portfolio/holdings.json`). Decyzja: trzymaj / dokup / redukuj / wyjdź. Horyzont: **{HORIZON}**.
 
-**ZAŁOŻENIE:** Inwestor **JUŻ POSIADA** analizowane akcje w portfelu (pozycja długa). Nie planuje pierwszego wejścia — decyduje o **trzymaniu, dokupie, redukcji lub wyjściu**.
+Jeśli w holdings jest `entry` / `stop_loss` dla tickera, wspomnij je w ticketcie jako **pozycja zapisana** (nie wymyślaj innych).
 
-Przygotuj raport decyzyjny (sekcje 1–7) w `recommendations.md`.
+Napisz **wyłącznie** ticket (bez list ostrzeżeń, 3 profili inwestora ani dużych tabel alertów).
 
----
+```markdown
+# {TICKER} — Ticket posiadacza ({DATE})
 
-## 1. 📌 BŁYSKAWICZNE PODSUMOWANIE (3–5 zdań)
-Aktualna cena, trend, katalizator tygodnia, sentyment. Jedno zdanie: co robić z **istniejącą** pozycją teraz?
+**Werdykt:** HOLD | ADD | REDUCE | EXIT
+**Horyzont:** …
+**Cena ref.:** $X.XX
 
----
+| | Poziom | Uwagi |
+|---|--------|------|
+| **Akcja teraz** | … | trzymaj / dokup @ $… / sprzedaj X% @ market |
+| **Stop-loss** | $… | twardy / trailing |
+| **TP1** | $… | redukcja części |
+| **TP2** | $… | wyjście reszty |
 
-## 2. ✅ CO ROBIĆ (lista rekomendacji)
-Konkretne kroki dla **posiadacza** akcji: trzymaj / dokup / redukuj / sprzedaj (częściowo lub w całości).
+**Sizing / skala:** …
+**Warunek dokupu** (jeśli ADD): …
+**Unieważnienie / pełne wyjście:** …
 
-Format:
-▶ [AKCJA] – [WARUNEK/CENA] – [UZASADNIENIE]
+**Dlaczego (1–2 zdania):** …
 
----
+**WERDYKT KOŃCOWY:** …
 
-## 3. ❌ CZEGO NIE ROBIĆ
-Błędy przy zarządzaniu otwartą pozycją (paniczna sprzedaż, dokup w szczycie, brak stop-loss itp.).
+![wykres](charts/…)
+```
 
-Format:
-✖ [CZEGO UNIKAĆ] – [DLACZEGO RYZYKOWNE] – [KIEDY TO OSTRZEŻENIE TRACI WAŻNOŚĆ]
+### Mapowanie werdyktu
+- PM Buy / Overweight → **ADD** lub **HOLD** (ADD tylko z jasnym poziomem dokupu)
+- PM Hold → **HOLD** (+ SL/TP do zarządzania)
+- PM Underweight → **REDUCE** (podaj % i poziom)
+- PM Sell → **EXIT**
 
----
+Poziomy z Trader/PM; przy konflikcie wygrywa **Portfolio Manager**.
 
-## 4. 🎯 STRATEGIA INWESTOWANIA
-Trader / średnioterminowy / długoterminowy — ale z perspektywy **posiadacza** (skalowanie, trailing stop, cele realizacji zysku).
+### Wykres
+```bash
+python scripts/plot_technical.py \
+  --stock RUN_DIR/0_data/stock.txt \
+  --ticker TICKER \
+  --date DATE \
+  --current PRICE \
+  --support SL,... \
+  --resistance TP1,TP2 \
+  --out RUN_DIR/charts
+```
 
----
-
-## 5. 🔔 LISTA ALERTÓW CENOWYCH
-- **Alerty dokupu / utrzymania** (górne przebicia)
-- **Alerty ostrzegawcze / redukcji / wyjścia** (dolne przebicia)
-
-Tabela + TOP 2 priorytety.
-
----
-
-## 6. 📊 WARUNKI ZMIANY REKOMENDACJI
-- Z TRZYMAJ → DOKUP: [warunki]
-- Z TRZYMAJ → REDUKUJ/SPRZEDAJ: [warunki]
-- Z TRZYMAJ → PEŁNE WYJŚCIE: [warunki]
-
----
-
-## 7. WYKRESY TECHNICZNE
-Jak w `recommendations-new-position.md` — uruchom `scripts/plot_technical.py` z poziomami z raportu.
-
----
-
-**ZASADY:** po polsku, konkretne ceny, bez powtórzeń. Zakończ **WERDYKT KOŃCOWY** dla inwestora **z otwartą pozycją**.
+Osadź PNG. Koniec.

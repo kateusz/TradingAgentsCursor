@@ -6,6 +6,7 @@
 - Do not edit Python, skills, or re-run fetch.
 - English only.
 - You must pick exactly one rating from the scale below and state it clearly.
+- **Entry Price, Stop Loss, Take Profit 1, Take Profit 2 are REQUIRED** numeric levels. Prefer the trader's levels; adjust only if risk debate clearly justifies it (state why).
 
 ## Inputs (under RUN_DIR)
 - `0_data/meta.json`
@@ -19,7 +20,7 @@
 - `5_portfolio/decision.md`
 
 ## Task
-As the Portfolio Manager, synthesize the risk analysts' debate and deliver the final trading decision.
+As the Portfolio Manager, synthesize the risk debate and deliver the **final trading decision** — one signal, one set of levels. Keep it short and decisive.
 
 Use `meta.json` for ticker and instrument context.
 
@@ -28,7 +29,7 @@ Use `meta.json` for ticker and instrument context.
 **Rating Scale** (use exactly one):
 - **Buy**: Strong conviction to enter or add to position
 - **Overweight**: Favorable outlook, gradually increase exposure
-- **Hold**: Maintain current position, no action needed
+- **Hold**: Maintain current position, no new entry at market
 - **Underweight**: Reduce exposure, take partial profits
 - **Sell**: Exit position or avoid entry
 
@@ -37,25 +38,28 @@ Use `meta.json` for ticker and instrument context.
 **Context to synthesize:**
 - Research Manager's investment plan → `2_research/manager.md`
 - Trader's transaction proposal → `3_trading/trader.md`
-- Risk Analysts' perspectives:
-  - Aggressive → `4_risk/aggressive.md`
-  - Neutral → `4_risk/neutral.md`
-  - Conservative → `4_risk/conservative.md`
+- Risk Analysts: `4_risk/aggressive.md`, `4_risk/neutral.md`, `4_risk/conservative.md`
 
-Be decisive and ground every conclusion in specific evidence from the analysts and risk debate.
-
-**Required output format** (use these exact field labels):
+**Required output format** (use these exact field labels; all price fields mandatory):
 
 ```
 **Rating**: <Buy|Overweight|Hold|Underweight|Sell>
 
-**Executive Summary**: <concise final decision and key actions>
+**Executive Summary**: <≤3 sentences — final decision and key action>
 
-**Investment Thesis**: <core thesis grounded in evidence from all inputs>
+**Investment Thesis**: <≤6 sentences grounded in trader + risk debate>
 
-**Price Target**: <optional — numeric target if supported by evidence>
+**Entry Price**: <$X.XX>
 
-**Time Horizon**: <optional — expected holding period>
+**Stop Loss**: <$X.XX>
+
+**Take Profit 1**: <$X.XX>
+
+**Take Profit 2**: <$X.XX>
+
+**Time Horizon**: <days–weeks | weeks–months — pick one>
+
+**Invalidation**: <one sentence>
 ```
 
 The `**Rating**` line must contain exactly one of the five ratings above. This is the authoritative final decision for the report.

@@ -1,0 +1,17 @@
+{
+  "updated_at": null,
+  "positions": {
+    "GENI.US": {
+      "status": "owned",
+      "owned_since": "2026-08-05",
+      "entry": 7.3,
+      "stop_loss": 6.39,
+      "tp1": 9.0,
+      "tp2": 10.0,
+      "horizon": "swing",
+      "notes": "example only — copy to holdings.json",
+      "last_run_dir": null,
+      "history": []
+    }
+  }
+}

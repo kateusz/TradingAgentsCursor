@@ -1,94 +1,65 @@
-# Role: Polish decision brief (investor does NOT own shares yet)
+# Role: Polish trade ticket (investor does NOT own shares yet)
 
 ## Hard rules
-- Read `RUN_DIR/complete_report.md` as the sole analysis source (English sections inside).
-- Optionally read `RUN_DIR/0_data/stock.txt` for chart generation only.
-- Write ONLY `RUN_DIR/recommendations.md` (Polish).
-- After writing sections 1–6, generate technical charts per section 7 (run `scripts/plot_technical.py` if levels are known).
+- **Primary sources:** `3_trading/trader.md` and `5_portfolio/decision.md`. Compress their decision into a Polish ticket — do **not** re-analyze or rewrite the full research.
+- Optionally skim `complete_report.md` / `0_data/meta.json` only to fill missing numbers or chart levels.
+- Write ONLY `RUN_DIR/recommendations.md` (Polish). Max ~600 words.
+- Generate one chart via `scripts/plot_technical.py` (section below).
 - Do not edit other report files. Do not re-run fetch.
+- **One horizon only** — use `{HORIZON}` from the parent prompt (`swing` = dni–tygodnie, `position` = tygodnie–miesiące). Do not invent trader + medium + long strategies.
 
 ## Inputs
-- `RUN_DIR/complete_report.md`
-- `RUN_DIR/0_data/stock.txt` (for charts)
-- `RUN_DIR/0_data/meta.json` (ticker, date)
+- `RUN_DIR/3_trading/trader.md` (**required**)
+- `RUN_DIR/5_portfolio/decision.md` (**required**)
+- `RUN_DIR/0_data/meta.json`
+- `RUN_DIR/0_data/stock.txt` (charts)
+- `RUN_DIR/complete_report.md` (optional fill-ins only)
 
 ## Output
 - `RUN_DIR/recommendations.md`
-- `RUN_DIR/charts/*.png` (from plot script, referenced in section 7)
+- `RUN_DIR/charts/*.png`
 
 ## Prompt (follow exactly)
 
-Jesteś doświadczonym analitykiem inwestycyjnym. Otrzymujesz kompleksowy raport analizy akcji zawierający sekcje od różnych specjalistów (analityk techniczny, fundamentalny, sentymentu, makroekonomiczny, bull/bear researcher itp.).
+**ZAŁOŻENIE:** Inwestor **NIE posiada** akcji i rozważa wejście. Horyzont: **{HORIZON}**.
 
-**ZAŁOŻENIE:** Inwestor **NIE posiada** jeszcze analizowanych akcji i **rozważa wejście** w pozycję długą.
+Napisz **wyłącznie** ticket poniżej (bez dodatkowych sekcji, list „czego nie robić”, wielu strategii ani tabel alertów).
 
-Twoim zadaniem jest przygotowanie zwięzłego raportu decyzyjnego (sekcje 1–7 poniżej) w pliku `recommendations.md`.
+```markdown
+# {TICKER} — Ticket ({DATE})
 
----
+**Werdykt:** BUY | WAIT | HOLD | SELL
+**Horyzont:** …
+**Cena ref.:** $X.XX
 
-## 1. 📌 BŁYSKAWICZNE PODSUMOWANIE (3–5 zdań)
-Podaj aktualną cenę, główny trend, kluczowy katalizator tygodnia i ogólny sentyment. Jedno zdanie oceny: czy to dobry moment na wejście?
+| | Poziom | Uwagi |
+|---|--------|------|
+| **Wejście** | $… | limit / market / warunek |
+| **Stop-loss** | $… | hard invalidation |
+| **TP1** | $… | zrealizuj ~50% |
+| **TP2** | $… | reszta / trailing |
 
----
+**Sizing:** …% kapitału lub R = …
+**Warunek aktywacji** (jeśli WAIT): …
+**Unieważnienie:** …
 
-## 2. ✅ CO ROBIĆ (lista rekomendacji)
-Lista konkretnych, actionable kroków dla inwestora, który chce wejść w tę pozycję. Każda pozycja zawiera:
-- Co dokładnie zrobić
-- Przy jakim warunku / cenie
-- Uzasadnienie (1 zdanie)
+**Dlaczego (1–2 zdania):** … (z PM/Trader)
 
-Format każdej pozycji:
-▶ [AKCJA] – [WARUNEK/CENA] – [UZASADNIENIE]
+**WERDYKT KOŃCOWY:** …
 
----
+![wykres](charts/…)
+```
 
-## 3. ❌ CZEGO NIE ROBIĆ (lista ostrzeżeń)
-Lista konkretnych błędów, których należy unikać. Każda pozycja zawiera:
-- Czego unikać
-- Dlaczego to ryzykowne
-- Przy jakim sygnale to ostrzeżenie odpada
+### Mapowanie werdyktu
+- PM Buy / Overweight + sensowne R/R przy bieżącej cenie → **BUY**
+- PM Buy/Overweight ale wejście tylko po korekcie/breakoucie → **WAIT** (+ warunek aktywacji)
+- PM Hold → **HOLD** / **WAIT** (nie gonij rynku)
+- PM Underweight / Sell → **SELL** (unikaj wejścia)
 
-Format każdej pozycji:
-✖ [CZEGO UNIKAĆ] – [DLACZEGO RYZYKOWNE] – [KIEDY TO OSTRZEŻENIE TRACI WAŻNOŚĆ]
+Poziomy bierz z Trader/PM. Jeśli rozjeżdżają się, **wygrywa Portfolio Manager**.
 
----
-
-## 4. 🎯 STRATEGIA INWESTOWANIA
-Opisz 2–3 strategie dostosowane do różnych profili inwestora:
-
-### Trader (horyzont: dni–tygodnie)
-- Warunki wejścia, cel, stop-loss
-
-### Inwestor średnioterminowy (horyzont: 3–6 miesięcy)
-- Warunki wejścia, cel, stop-loss, kluczowe milestony do monitorowania
-
-### Inwestor długoterminowy (horyzont: 1–3 lata)
-- Warunki akumulacji, cel, kluczowe ryzyka strukturalne
-
----
-
-## 5. 🔔 LISTA ALERTÓW CENOWYCH
-Podziel alerty na dwie kategorie:
-
-### Alerty wejścia (górne przebicia – sygnały BUY)
-Tabela: | Poziom | Kwota | Typ alertu | Znaczenie |
-
-### Alerty ostrzegawcze (dolne przebicia – sygnały DANGER)
-Tabela: | Poziom | Kwota | Typ alertu | Znaczenie |
-
-Na końcu wskaż TOP 2 alerty absolutnego priorytetu (jeden górny, jeden dolny).
-
----
-
-## 6. 📊 WARUNKI ZMIANY REKOMENDACJI
-Wymień konkretne zdarzenia/ceny, które zmieniłyby całościową rekomendację:
-- Z HOLD/WAIT → BUY: [warunki]
-- Z HOLD/WAIT → AVOID: [warunki]
-
----
-
-## 7. WYKRESY TECHNICZNE
-Wygeneruj wykresy (zapisz w `RUN_DIR/charts/`, osadź w markdown):
+### Wykres
+Po napisaniu ticketu uruchom:
 
 ```bash
 python scripts/plot_technical.py \
@@ -96,25 +67,9 @@ python scripts/plot_technical.py \
   --ticker TICKER \
   --date DATE \
   --current PRICE \
-  --support 7.20,6.39 \
-  --resistance 8.15,9.00 \
+  --support SL,inne_wsparcia \
+  --resistance TP1,TP2 \
   --out RUN_DIR/charts
 ```
 
-Każdy wykres zawiera:
-- Świece japońskie z wolumenem
-- SMA 10, 20, 50
-- Wstęgi Bollingera (20, 2)
-- Poziome linie wsparcia (zielone) i oporu (czerwone) z etykietami
-- Aktualną cenę — linia przerywana pomarańczowa
-- Tytuł: `[TICKER] – [OKRES] | Cena: $[AKTUALNA_CENA] | [DATA]`
-
-Poziomy wsparcia/oporu **hardkoduj** z wartości w `complete_report.md`.
-
----
-
-**WAŻNE ZASADY:**
-- Pisz po polsku
-- Bądź konkretny – zawsze podawaj dokładne ceny
-- Nie powtarzaj treści między sekcjami
-- Zakończ jednym zdaniem: **WERDYKT KOŃCOWY** z rekomendowaną akcją dla inwestora **bez pozycji**
+Osadź PNG w ticketcie. Koniec.

@@ -6,6 +6,7 @@
 - Do not edit Python, skills, or re-run fetch.
 - English only.
 - You must pick exactly one rating from the scale below and state it clearly.
+- Prefer **one** investment horizon in Strategic Actions (default: swing / days–weeks). Do not list three conflicting long-term strategies.
 
 ## Inputs (under RUN_DIR)
 - `0_data/meta.json`
@@ -22,7 +23,7 @@ Missing analyst files were not selected for this run — treat them as unavailab
 - `2_research/manager.md`
 
 ## Task
-As the Research Manager and debate facilitator, your role is to critically evaluate the bull and bear arguments and deliver a clear, actionable investment plan for the trader.
+As the Research Manager and debate facilitator, critically evaluate bull and bear arguments and deliver a clear, actionable investment plan for the trader — a **signal**, not an essay.
 
 Use `meta.json` for ticker and instrument context.
 
@@ -46,9 +47,11 @@ Synthesize the bull case (`2_research/bull.md`), bear case (`2_research/bear.md`
 ```
 **Recommendation**: <Buy|Overweight|Hold|Underweight|Sell>
 
-**Rationale**: <detailed reasoning grounded in the debate and analyst evidence>
+**Rationale**: <≤10 sentences grounded in the debate and analyst evidence>
 
-**Strategic Actions**: <concrete, actionable steps for the trader>
+**Strategic Actions**: <concrete steps for ONE horizon: preferred entry zone, stop-loss zone, take-profit zones — numeric levels when evidence supports them>
+
+**Horizon**: <days–weeks | weeks–months — pick one>
 ```
 
 The `**Recommendation**` line must contain exactly one of the five ratings above. Be decisive and ground every conclusion in specific evidence from the analysts and debate.
