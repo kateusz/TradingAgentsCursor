@@ -15,7 +15,7 @@ Fan-out: for each `status=owned` ticker in `portfolio/holdings.json`, launch **o
 | Key | Default | Notes |
 |-----|---------|-------|
 | `date` | today local `YYYY-MM-DD` | Passed to every child |
-| `depth` | `medium` | `shallow` \| `medium` \| `deep` |
+| `depth` | `shallow` | Daily refresh default. Use `medium`/`deep` for a full rebuild |
 | `horizon` | per-position or `swing` | Global override if set; else use holdings `horizon`, else `swing` |
 | `tickers` | all owned | Optional comma filter, e.g. `tickers=GENI.US,NVDA` |
 | `model` | `composer-2.5` | Always Composer, never Fast |
@@ -24,11 +24,12 @@ Examples:
 
 ```
 /analyze-portfolio
-/analyze-portfolio depth=shallow
+/analyze-portfolio depth=medium
 /analyze-portfolio date=2026-08-06 tickers=GENI.US,TTWO.US
 /analyze-portfolio horizon=swing
 ```
 
+**Why default `shallow`:** owned names already have a thesis in memory + prior reports. A next-day pass mainly refreshes price/levels (1 debate + 1 risk cycle). Use `depth=medium` or `deep` when the story changed (earnings, gap, thesis break) or after a long pause.
 ## Model (required)
 
 Same as analyze-ticker: **`composer-2.5` only** on parent and every Task. Never Fast.

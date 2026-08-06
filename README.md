@@ -220,7 +220,7 @@ In Cursor Agent chat:
 /analyze-ticker NVDA horizon=swing
 /analyze-ticker GENI.US horizon=position
 /analyze-portfolio
-/analyze-portfolio depth=shallow
+/analyze-portfolio depth=medium
 /analyze-portfolio tickers=GENI.US,TTWO.US
 ```
 
@@ -228,7 +228,7 @@ In Cursor Agent chat:
 |-----------|---------|--------|
 | `ticker` | *(required for `/analyze-ticker`)* | e.g. `NVDA`, `GENI.US` |
 | `date` | today | `YYYY-MM-DD` |
-| `depth` | `medium` | `shallow` (1 debate + 1 risk cycle), `medium` (3+3), `deep` (5+5) |
+| `depth` | `medium` (`/analyze-ticker`) / **`shallow`** (`/analyze-portfolio`) | `shallow` \| `medium` \| `deep` |
 | `horizon` | `swing` | `swing` (days–weeks) \| `position` (weeks–months) — **one** ticket horizon |
 | `analysts` | all four | comma-separated: `market`, `social`, `news`, `fundamentals` |
 | `model` | `composer-2.5` | always Composer — Fast variants are ignored |
@@ -242,8 +242,9 @@ Skill: [`.cursor/skills/analyze-portfolio/SKILL.md`](.cursor/skills/analyze-port
 
 1. Reads `portfolio/holdings.json` for `status=owned`.
 2. Launches **one Task subagent per ticker** (parallel), each running the full `/analyze-ticker` pipeline as an existing holder.
-3. Skips “czy posiadasz?” / “czy kupujesz?”; updates memory with `event=reanalyzed` and refreshed SL/TP from each ticket.
-4. Parent returns a summary table of werdykty + paths.
+3. Default **`depth=shallow`** (fast daily refresh). Override with `depth=medium` / `deep` after earnings, gaps, or a long break.
+4. Skips “czy posiadasz?” / “czy kupujesz?”; updates memory with `event=reanalyzed` and refreshed SL/TP from each ticket.
+5. Parent returns a summary table of werdykty + paths.
 
 ### What happens
 

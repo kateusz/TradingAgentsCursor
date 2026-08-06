@@ -221,5 +221,13 @@ __marimo__/
 # Personal portfolio memory (local only)
 portfolio/holdings.json
 
+# Analysis reports: ignore raw data and agent drafts; keep only deliverables
+reports/**
+!reports/**/
+!reports/**/complete_report.md
+!reports/**/recommendations.md
+!reports/**/charts/
+!reports/**/charts/**
+
 # Enterprise env file (secrets)
 .env.enterprise
