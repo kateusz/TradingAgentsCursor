@@ -8,7 +8,7 @@ description: >-
 
 # Analyze Portfolio (owned positions)
 
-Fan-out: for each `status=owned` ticker in `portfolio/holdings.json`, launch **one** Task subagent that runs the full [analyze-ticker](../analyze-ticker/SKILL.md) pipeline.
+Fan-out: for each `status=owned` **lot** in `portfolio/holdings.json` (each dict key under `positions`, e.g. `GENI.US` and `GENI.US#2`), launch **one** Task subagent that runs the full [analyze-ticker](../analyze-ticker/SKILL.md) pipeline.
 
 ## Inputs
 
@@ -48,33 +48,34 @@ python scripts/portfolio_memory.py list --status owned
 ```
 
 - If `positions` empty: stop and tell the user to mark holdings first (`portfolio_memory.py set …` or finish an `/analyze-ticker` buy flow).
-- If `tickers=` given: keep only those keys (uppercase) that are owned; warn on unknowns / not-owned.
+- If `tickers=` given: keep only lots whose base ticker matches (uppercase) and `status=owned`; warn on unknowns / not-owned.
 
-Build list `OWNED = [{ticker, entry, stop_loss, tp1, tp2, horizon}, …]`.
+Build list `OWNED = [{position_key, ticker, entry, stop_loss, tp1, tp2, horizon}, …]` — one row per **lot**, not per unique ticker.
 
-Confirm to the user: *Re-analyzing N owned tickers: …* then continue (no extra gate unless list is empty).
+Confirm to the user: *Re-analyzing N owned lots: …* then continue (no extra gate unless list is empty).
 
-### 3. Launch one Task per ticker (parallel)
+### 3. Launch one Task per lot (parallel)
 
-In **one message**, launch **N** Tasks (one per ticker). Do **not** analyze tickers yourself in the parent.
+In **one message**, launch **N** Tasks (one per lot). Do **not** analyze tickers yourself in the parent.
 
 **Task settings (every child):**
 
 - `subagent_type`: `generalPurpose`
 - `model`: `composer-2.5`
 - `run_in_background`: `false`
-- `description`: `analyze {TICKER}`
+- `description`: `analyze {TICKER} ({POSITION_KEY})`
 
 **Child prompt template** (fill absolute paths and fields):
 
 ```
-You are a per-ticker worker for analyze-portfolio.
+You are a per-lot worker for analyze-portfolio.
 
 REPO_ROOT: {REPO_ROOT}
 Follow EXACTLY the skill at: {ANALYZE_SKILL}
 
 Inputs for this run only:
 - ticker={TICKER}
+- position_key={POSITION_KEY}
 - date={DATE}
 - depth={DEPTH}
 - horizon={HORIZON}
@@ -85,11 +86,11 @@ Hard overrides for this portfolio batch:
 2. Use role recommendations-existing-position.md.
 3. After writing the trade ticket, do NOT ask hold/add/exit.
 4. Persist memory once:
-   python scripts/portfolio_memory.py set --ticker {TICKER} --status owned --event reanalyzed \
+   python scripts/portfolio_memory.py set --ticker {TICKER} --position-key {POSITION_KEY} --status owned --event reanalyzed \
      --stop-loss <from ticket> --tp1 <from ticket> --tp2 <from ticket> \
      --horizon {HORIZON} --run-dir <RUN_DIR>
    Keep existing entry unless the ticket clearly updates an add price — then pass --entry.
-5. Known position context (from holdings): entry={ENTRY} sl={SL} tp1={TP1} tp2={TP2}
+5. Known lot context (from holdings): position_key={POSITION_KEY} entry={ENTRY} sl={SL} tp1={TP1} tp2={TP2}
 
 When done, return ONLY:
 - RUN_DIR absolute path
@@ -105,8 +106,8 @@ Use holdings values for `{ENTRY}` etc. (`null` if missing). `{HORIZON}` = user o
 
 After all Tasks finish, reply with a compact table:
 
-| Ticker | Werdykt | Entry (mem) | SL | TP1 | TP2 | recommendations.md |
-|--------|---------|-------------|----|-----|-----|--------------------|
+| Ticker | Lot | Werdykt | Entry (mem) | SL | TP1 | TP2 | recommendations.md |
+|--------|-----|---------|-------------|----|-----|-----|--------------------|
 
 Then list any failures (missing ticket / empty RUN_DIR) and offer to re-run failed tickers only (`/analyze-portfolio tickers=…`).
 
@@ -114,7 +115,7 @@ Do **not** paste full `complete_report.md` files.
 
 ## Constraints
 
-- One Task = one ticker = full analyze-ticker pipeline (that child may spawn its own analyst Tasks).
+- One Task = one lot = full analyze-ticker pipeline (that child may spawn its own analyst Tasks).
 - Parent never skips the list step; never invents owned tickers.
 - Empty portfolio → stop.
 - `composer-2.5` only.

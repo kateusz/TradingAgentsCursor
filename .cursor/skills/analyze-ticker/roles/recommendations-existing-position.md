@@ -4,7 +4,7 @@
 - **Primary sources:** `3_trading/trader.md` and `5_portfolio/decision.md`. Compress — do **not** re-write full research from `complete_report.md`.
 - Optionally skim `complete_report.md` / `meta.json` for missing numbers or chart levels.
 - Write ONLY `RUN_DIR/recommendations.md` (Polish). Max ~600 words.
-- Generate one chart via `scripts/plot_technical.py`.
+- Generate one chart via `scripts/plot_technical.py` (legend is automatic — SMA 10/20/50 z aktualną ceną, support/resistance, cena ref.).
 - Do not edit other files. Do not re-run fetch.
 - **One horizon only** — use `{HORIZON}` from the parent (`swing` | `position`). No multi-strategy essays.
 
@@ -23,7 +23,7 @@
 
 **ZAŁOŻENIE:** Inwestor **JUŻ POSIADA** pozycję długą (potwierdzone przez użytkownika lub `portfolio/holdings.json`). Decyzja: trzymaj / dokup / redukuj / wyjdź. Horyzont: **{HORIZON}**.
 
-Jeśli w holdings jest `entry` / `stop_loss` dla tickera, wspomnij je w ticketcie jako **pozycja zapisana** (nie wymyślaj innych).
+Jeśli parent podał `{ENTRY}` lub w holdings jest `entry` / `stop_loss` dla tickera, wspomnij je w ticketcie jako **pozycja zapisana** (nie wymyślaj innych). Pokaż P/L względem ceny ref. gdy znasz cenę wejścia.
 
 Napisz **wyłącznie** ticket (bez list ostrzeżeń, 3 profili inwestora ani dużych tabel alertów).
 
@@ -72,4 +72,4 @@ python scripts/plot_technical.py \
   --out RUN_DIR/charts
 ```
 
-Osadź PNG. Koniec.
+Osadź PNG. Skrypt dodaje legendę automatycznie (SMA z ceną, support/resistance, cena ref.). Koniec.

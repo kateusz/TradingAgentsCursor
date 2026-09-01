@@ -4,7 +4,7 @@
 - **Primary sources:** `3_trading/trader.md` and `5_portfolio/decision.md`. Compress their decision into a Polish ticket — do **not** re-analyze or rewrite the full research.
 - Optionally skim `complete_report.md` / `0_data/meta.json` only to fill missing numbers or chart levels.
 - Write ONLY `RUN_DIR/recommendations.md` (Polish). Max ~600 words.
-- Generate one chart via `scripts/plot_technical.py` (section below).
+- Generate one chart via `scripts/plot_technical.py` (section below; legend is automatic).
 - Do not edit other report files. Do not re-run fetch.
 - **One horizon only** — use `{HORIZON}` from the parent prompt (`swing` = dni–tygodnie, `position` = tygodnie–miesiące). Do not invent trader + medium + long strategies.
 
@@ -72,4 +72,4 @@ python scripts/plot_technical.py \
   --out RUN_DIR/charts
 ```
 
-Osadź PNG w ticketcie. Koniec.
+Osadź PNG w ticketcie. Skrypt dodaje legendę automatycznie (SMA z ceną, support/resistance, cena ref.). Koniec.

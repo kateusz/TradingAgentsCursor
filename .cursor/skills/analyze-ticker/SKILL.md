@@ -255,8 +255,10 @@ python scripts/portfolio_memory.py get --ticker TICKER
 
 | Result `status` | Effect |
 |-----------------|--------|
-| `owned` | Skip position question. Use `recommendations-existing-position.md`. Tell the user you remembered they own it (show entry/SL if present). |
+| `owned` | Skip position question. Use `recommendations-existing-position.md`. Tell the user you remembered they own it (show entry/SL if present). If `entry` is missing, run **11.A.1** before Phase 12. |
 | `watching` / `closed` / `unknown` | Ask position status as below (unless user already stated it). |
+
+If `get` returns multiple lots (`positions` object with 2+ keys), ask which lot this run is for **or** whether this is a **new** lot (`--new` on set). Pass the chosen `position_key` through the rest of the flow.
 
 #### 11.A Position status
 
@@ -264,14 +266,28 @@ Ask **once** only if memory is not `owned` and user did not already say:
 
 > Czy **rozważasz kupno** (brak pozycji), czy **już posiadasz**?
 
-| Answer | Role file | Memory write (immediate) |
-|--------|-----------|---------------------------|
+| Answer | Role file | Memory write |
+|--------|-----------|--------------|
 | Rozważam kupno | `recommendations-new-position.md` | none yet (wait until after ticket) |
-| Już posiadam | `recommendations-existing-position.md` | `set --status owned --event marked_owned --run-dir RUN_DIR` |
+| Już posiadam | `recommendations-existing-position.md` | after **11.A.1** — `set --status owned --event marked_owned --entry ENTRY …` |
+
+#### 11.A.1 Entry price (mandatory when user owns — do not skip)
+
+If the user chose **Już posiadam** (or memory is `owned`) and `entry` is not already known from memory or chat, ask **once**:
+
+> Po jakiej **cenie kupiłeś/kupiłaś**? (np. `245 PLN` lub `7.30 USD`)
+
+Parse a single numeric price from the reply. If the user gives a range, ask once for one reference average. If they decline, use the current reference price from `0_data/stock.txt` / trader output and say so in the ticket.
+
+Write memory immediately (include `--entry`):
 
 ```bash
-python scripts/portfolio_memory.py set --ticker TICKER --status owned --event marked_owned --run-dir RUN_DIR --horizon HORIZON
+python scripts/portfolio_memory.py set \
+  --ticker TICKER --status owned --event marked_owned \
+  --entry ENTRY --run-dir RUN_DIR --horizon HORIZON
 ```
+
+Pass `{ENTRY}` through to Phase 12.
 
 #### 11.B Horizon (skip if `horizon=` already parsed)
 
@@ -282,9 +298,9 @@ python scripts/portfolio_memory.py set --ticker TICKER --status owned --event ma
 | Swing (dni–tygodnie) | `swing` |
 | Pozycja (tygodnie–miesiące) | `position` |
 
-Default if user declines: `swing`. Prefer one `AskQuestion` covering A+B when both unknown.
+Default if user declines: `swing`. Prefer one `AskQuestion` for position + horizon when both unknown; ask entry price in a **follow-up** (free numeric input).
 
-**Do not** launch Phase 12 until position status is known.
+**Do not** launch Phase 12 until position status is known **and** (for existing holders) entry price is known or explicitly declined with a documented fallback.
 
 ### 12. Recommendations — trade ticket (sequential Task)
 
@@ -297,10 +313,10 @@ HORIZON: {swing|position}
 Role instructions: {ROLES_DIR}/recommendations-{new-position|existing-position}.md
 
 Primary inputs: 3_trading/trader.md and 5_portfolio/decision.md.
-If HOLDINGS has this ticker as owned, pass entry/SL into the prompt.
+If holder role: pass ENTRY={ENTRY} (user-stated or from holdings) and any stored SL/TP into the prompt.
 Compress into a short Polish trade ticket (Entry / SL / TP1 / TP2) per role file.
 Do NOT re-analyze complete_report.md — only fill missing numbers if needed.
-Generate one chart to RUN_DIR/charts/ via scripts/plot_technical.py.
+Generate one chart to RUN_DIR/charts/ via scripts/plot_technical.py (auto legend: SMA 10/20/50 z ceną, support/resistance, cena ref.).
 Do not edit complete_report.md.
 ```
 
@@ -331,6 +347,7 @@ Ask once:
 | Answer | Command |
 |--------|---------|
 | Tak / kupuję | `set --status owned --event bought --entry … --stop-loss … --tp1 … --tp2 … --horizon … --run-dir RUN_DIR` |
+| Tak / kupuję (kolejny lot tego tickera) | add `--new` to create `TICKER#2`, `TICKER#3`, … |
 | Nie | `set --status watching --event skipped --run-dir RUN_DIR --horizon …` |
 
 **If role was existing-position** (owned / remembered):
@@ -341,9 +358,10 @@ Ask once (skip if user already said exit/reduce/hold in chat):
 
 | Answer | Command |
 |--------|---------|
-| Trzymam / Hold | `set --status owned --event hold --stop-loss … --tp1 … --tp2 … --run-dir RUN_DIR` (keep prior `--entry` if not updating) |
-| Dokupuję | `set --status owned --event added --entry … --stop-loss … --tp1 … --tp2 … --run-dir RUN_DIR` |
-| Redukuję / wychodzę | `set --status closed --event exited --run-dir RUN_DIR` |
+| Trzymam / Hold | `set --status owned --event hold --stop-loss … --tp1 … --tp2 … --run-dir RUN_DIR` (keep prior `--entry` if not updating; pass `--position-key` when multiple lots exist) |
+| Dokupuję (ten sam lot) | `set --status owned --event added --entry … --stop-loss … --tp1 … --tp2 … --run-dir RUN_DIR` |
+| Dokupuję (nowy lot) | `set --new --status owned --event bought --entry … --stop-loss … --tp1 … --tp2 … --run-dir RUN_DIR` |
+| Redukuję / wychodzę | `set --status closed --event exited --run-dir RUN_DIR` (pass `--position-key` when multiple lots exist) |
 
 Example:
 
@@ -352,9 +370,15 @@ python scripts/portfolio_memory.py set \
   --ticker TICKER --status owned --event bought \
   --entry 7.30 --stop-loss 6.39 --tp1 9.00 --tp2 10.00 \
   --horizon swing --run-dir RUN_DIR
+
+# second lot of the same ticker:
+python scripts/portfolio_memory.py set --new \
+  --ticker TICKER --status owned --event bought \
+  --entry 8.10 --stop-loss 7.50 --tp1 9.50 --tp2 11.00 \
+  --horizon swing --run-dir RUN_DIR
 ```
 
-Confirm to the user that memory was updated (`portfolio/holdings.json`). Next `/analyze-ticker TICKER` skips the own/buy question when `status=owned`.
+Confirm to the user that memory was updated (`portfolio/holdings.json`). Next `/analyze-ticker TICKER` skips the own/buy question when any lot is `status=owned` (if multiple lots, clarify which lot unless user says "new lot").
 
 ## Constraints
 
@@ -369,5 +393,5 @@ Confirm to the user that memory was updated (`portfolio/holdings.json`). Next `/
 - Skipped analysts: omit their files; later roles tolerate missing analyst sections.
 - Partial run dirs stay on disk for debugging (no auto-delete).
 - **User deliverable:** short Polish **trade ticket** in `recommendations.md` (+ chart). `complete_report.md` is the English research archive.
-- **Gates:** position status required before Phase 12; ask horizon if not in the command.
+- **Gates:** position status required before Phase 12; for **Już posiadam** / `owned`, entry price required (11.A.1); ask horizon if not in the command.
 - **Memory:** read/write `portfolio/holdings.json` via `scripts/portfolio_memory.py` (never invent ownership).
