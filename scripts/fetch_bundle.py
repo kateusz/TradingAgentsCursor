@@ -9,7 +9,7 @@ from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
 from tradingagents.dataflows.config import set_config
-from tradingagents.dataflows.interface import route_to_vendor
+from tradingagents.dataflows.router import route_to_vendor
 from tradingagents.default_config import DEFAULT_CONFIG
 
 INDICATORS = [
