@@ -223,7 +223,7 @@ test("describes the snapshot and stages a six-file import", () => {
   assert.equal(view.imports.openLots, 1);
   assert.equal(view.imports.closedRows, 1);
   assert.equal(view.imports.openSources[0], "XTB-USD - Open Positions.csv");
-  assert.ok(view.imports.hygiene.some((note) => note.includes("instrument category")));
+  assert.ok(view.imports.hygiene.some((note) => note.includes("kategorii")));
   assert.equal(classifyImportName("XTB-EUR - Closed Positions.csv").kind, "closed");
   assert.equal(stageImports(["XTB-USD - Open Positions.csv"]).ready, false);
   assert.equal(staged.ready, true);

@@ -344,10 +344,10 @@ function alertsOf(lots, accounts, groups) {
     alerts.push({
       id: "stops",
       tone: "loss",
-      kicker: "Risk",
-      value: `${round2((naked / lots.length) * 100)}% exposed`,
-      text: `${naked} of ${lots.length} open lots have no broker stop.`,
-      tag: "Execution",
+      kicker: "Ryzyko",
+      value: `${round2((naked / lots.length) * 100)}% bez SL`,
+      text: `${naked} z ${lots.length} otwartych lotów nie ma stopu u brokera.`,
+      tag: "Wykonanie",
     });
   }
   const worst = [...groups.USD].sort((left, right) => left.pnl - right.pnl)[0];
@@ -356,21 +356,21 @@ function alertsOf(lots, accounts, groups) {
     alerts.push({
       id: "concentration",
       tone: "loss",
-      kicker: "Concentration",
-      value: `${share}% of USD loss`,
-      text: `${worst.ticker} is ${share}% of the USD unrealized drawdown.`,
-      tag: "Asymmetric",
+      kicker: "Koncentracja",
+      value: `${share}% straty USD`,
+      text: `${worst.ticker} to ${share}% niezrealizowanej straty w USD.`,
+      tag: "Asymetria",
     });
   }
   if (accounts.USD.swap) {
     alerts.push({
       id: "swap",
       tone: "loss",
-      kicker: "Financing",
+      kicker: "Finansowanie",
       value: accounts.USD.swap,
       currency: "USD",
-      text: "Swap drag on open USD lots.",
-      tag: "Overnight",
+      text: "Koszt swap na otwartych lotach USD.",
+      tag: "Nocne",
     });
   }
   const stale = CURRENCIES
@@ -381,10 +381,10 @@ function alertsOf(lots, accounts, groups) {
     alerts.push({
       id: "stale",
       tone: "warn",
-      kicker: "Stale thesis",
-      value: `T+${stale.plan.days} days`,
-      text: `${stale.ticker} was last analyzed on ${stale.plan.at.slice(0, 10)}.`,
-      tag: "Research",
+      kicker: "Nieświeża teza",
+      value: `T+${stale.plan.days} dni`,
+      text: `${stale.ticker}: ostatnia analiza ${stale.plan.at.slice(0, 10)}.`,
+      tag: "Analiza",
     });
   }
   return alerts;
@@ -393,11 +393,11 @@ function alertsOf(lots, accounts, groups) {
 function hygieneOf(lots, records, positions) {
   const openKeys = new Set(lots.map((lot) => lot.position_key));
   const notes = [];
-  if (lots.some((lot) => !lot.category)) notes.push("Open lots have no instrument category.");
+  if (lots.some((lot) => !lot.category)) notes.push("Pozycje otwarte w eksporcie nie mają kategorii instrumentu.");
   if (Object.keys(positions).some((key) => !openKeys.has(key))) {
-    notes.push("Research keys join by ticker, not lot id.");
+    notes.push("Klucze thesis łączą się po tickerze, nie po id lotu.");
   }
-  if (!records.some((row) => row.account_currency === "EUR")) notes.push("EUR closed export is empty.");
+  if (!records.some((row) => row.account_currency === "EUR")) notes.push("Zamknięty eksport EUR jest pusty.");
   return notes;
 }
 
