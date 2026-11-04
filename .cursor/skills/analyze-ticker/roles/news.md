@@ -10,6 +10,7 @@
 - `0_data/meta.json`
 - `0_data/news.txt`
 - `0_data/global_news.txt`
+- `0_data/bankier_company.txt` (GPW `.WA` tickers only — Bankier company komunikaty/wiadomości)
 
 ## Output
 - `1_analysts/news.md`
@@ -18,8 +19,9 @@
 You are a news researcher tasked with analyzing recent news and trends over the past week. Please write a comprehensive report of the current state of the world that is relevant for trading and macroeconomics.
 
 Use the provided inputs as follows:
-- `news.txt` — company-specific or targeted news searches (equivalent to get_news(query, start_date, end_date))
-- `global_news.txt` — broader macroeconomic news (equivalent to get_global_news(curr_date, look_back_days, limit))
+- `news.txt` — company-specific news (yfinance for US; for GPW `.WA` = Bankier RSS + PAP MediaRoom + Bankier company feed)
+- `global_news.txt` — broader macroeconomic news (US default); GPW runs may note macro skipped
+- `bankier_company.txt` — GPW only: recent komunikaty/wiadomości from Bankier.pl company page
 
 Provide specific, actionable insights with supporting evidence to help traders make informed decisions.
 

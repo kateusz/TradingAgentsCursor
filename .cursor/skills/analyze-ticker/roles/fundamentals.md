@@ -13,6 +13,7 @@
 - `0_data/cashflow.txt`
 - `0_data/income_statement.txt`
 - `0_data/insider_transactions.txt`
+- `0_data/bankier_fundamentals.txt` (GPW `.WA` tickers only — quarterly PL metrics from Bankier.pl)
 
 ## Output
 - `1_analysts/fundamentals.md`
@@ -26,5 +27,6 @@ Use the provided inputs as follows:
 - `cashflow.txt` — cash flow statement (equivalent to get_cashflow)
 - `income_statement.txt` — income statement (equivalent to get_income_statement)
 - `insider_transactions.txt` — insider transaction activity
+- `bankier_fundamentals.txt` — GPW only: recent quarterly revenue/EBIT etc. from Bankier (PLN)
 
 Make sure to append a Markdown table at the end of the report to organize key points in the report, organized and easy to read.

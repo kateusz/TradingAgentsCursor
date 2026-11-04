@@ -10,6 +10,7 @@ from pathlib import Path
 
 from tradingagents.dataflows.config import set_config
 from tradingagents.dataflows.router import route_to_vendor
+from tradingagents.dataflows.polish_market import enrich_gpw_bundle, is_gpw_ticker
 from tradingagents.default_config import DEFAULT_CONFIG
 
 INDICATORS = [
@@ -69,8 +70,11 @@ def fetch_bundle(*, ticker: str, date: str, out_dir: Path) -> dict:
     write("balance_sheet.txt", route_to_vendor("get_balance_sheet", ticker, "quarterly", date))
     write("cashflow.txt", route_to_vendor("get_cashflow", ticker, "quarterly", date))
     write("income_statement.txt", route_to_vendor("get_income_statement", ticker, "quarterly", date))
-    write("news.txt", route_to_vendor("get_news", ticker, news_start, date))
-    write("global_news.txt", route_to_vendor("get_global_news", date, 7, 5))
+    if is_gpw_ticker(ticker):
+        enrich_gpw_bundle(ticker=ticker, date=date, news_start=news_start, write=write)
+    else:
+        write("news.txt", route_to_vendor("get_news", ticker, news_start, date))
+        write("global_news.txt", route_to_vendor("get_global_news", date, 7, 5))
     write("insider_transactions.txt", route_to_vendor("get_insider_transactions", ticker))
 
     return {"ticker": ticker, "date": date, "out": str(out_dir), "files": files}
