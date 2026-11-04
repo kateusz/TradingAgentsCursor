@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import test from "node:test";
-import { buildOverview, closedStats, filterClosed, filterOpenGroups, groupClosed, openStats } from "./metrics.js";
+import { buildOverview, closedStats, filterClosed, filterOpenGroups, filterWatch, groupClosed, openStats } from "./metrics.js";
 
 function lot(currency, ticker, value, pnl, extra = {}) {
   const id = extra.position_id ?? `${ticker}-${value}`;
@@ -177,4 +177,28 @@ test("scores closed history inside the selected currency", () => {
   assert.equal(view.realized.PLN.pnl, 100);
   assert.equal(view.realized.EUR.slices, 0);
   assert.deepEqual(view.realized.USD.trajectory.at(-1), 6);
+});
+
+test("lists watched names that are not open lots", () => {
+  const view = buildOverview({
+    open: { updated_at: asOf, lots: [lot("USD", "TTWO.US", 10, -1)] },
+    closed: { records: [] },
+    thesis: {
+      positions: {
+        "NVDA.US": { status: "watching", horizon: "swing", entry: 180, stop_loss: 160, tp1: 210, history: [{ at: "2026-10-01T00:00:00Z" }] },
+        TTWO: { status: "watching", entry: 200, stop_loss: 180, history: [{ at: "2026-10-20T00:00:00Z" }] },
+        "MSFT.US": { status: "closed", entry: 400, stop_loss: 380, history: [{ at: "2026-10-02T00:00:00Z" }] },
+        AAPL: { status: "watching", entry: 170, stop_loss: 150, tp1: 190, history: [{ at: "2026-09-01T00:00:00Z" }] },
+        "AAPL.US": { status: "watching", history: [{ at: "2026-10-15T00:00:00Z" }] },
+      },
+    },
+  });
+  const names = view.watchlist.map((row) => row.ticker);
+
+  assert.deepEqual(names, ["AAPL.US", "NVDA.US"]);
+  assert.equal(view.watchlist[0].stopLoss, 150);
+  assert.equal(view.watchlist[0].entry, 170);
+  assert.equal(view.watchlist[0].at, "2026-10-15T00:00:00Z");
+  assert.equal(filterWatch(view.watchlist, "aapl").length, 1);
+  assert.equal(view.watchlist[0].status, "watching");
 });

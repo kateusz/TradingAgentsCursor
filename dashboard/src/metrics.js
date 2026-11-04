@@ -20,24 +20,33 @@ function latestAt(position) {
     .at(-1) ?? null;
 }
 
-function thesisFor(ticker, positions, asOf) {
+function matchesFor(ticker, positions) {
   const symbol = ticker.toUpperCase();
-  const matches = Object.entries(positions).filter(([key, position]) => {
+  return Object.entries(positions).filter(([key, position]) => {
     const candidate = key.toUpperCase();
     const named = String(position.ticker ?? candidate).toUpperCase();
     return root(candidate) === root(symbol) || root(named) === root(symbol);
   });
-  if (!matches.length) return null;
+}
+
+function pickMatch(symbol, matches) {
   const planned = matches.filter(([, position]) => (
     position.stop_loss != null || position.tp1 != null || position.tp2 != null
   ));
-  const pool = planned.length ? planned : matches;
+  const pool = (planned.length ? planned : matches).slice();
   pool.sort((left, right) => {
     const time = (latestAt(right[1]) ?? "").localeCompare(latestAt(left[1]) ?? "");
     if (time) return time;
     return Number(right[0].toUpperCase() === symbol) - Number(left[0].toUpperCase() === symbol);
   });
-  const position = pool[0][1];
+  return pool[0];
+}
+
+function thesisFor(ticker, positions, asOf) {
+  const symbol = ticker.toUpperCase();
+  const matches = matchesFor(ticker, positions);
+  if (!matches.length) return null;
+  const position = pickMatch(symbol, matches)[1];
   const at = latestAt(position);
   const elapsed = at && asOf ? Date.parse(asOf) - Date.parse(at) : null;
   return {
@@ -392,6 +401,44 @@ function hygieneOf(lots, records, positions) {
   return notes;
 }
 
+function displayTicker(matches) {
+  const names = matches.map(([key, position]) => String(position.ticker || key).toUpperCase().split("#")[0]);
+  return names.sort((left, right) => Number(right.includes(".")) - Number(left.includes(".")) || right.length - left.length)[0];
+}
+
+export function watchlistOf(positions, lots, asOf) {
+  const held = new Set((lots ?? []).map((lot) => root(lot.ticker)));
+  const grouped = new Map();
+  for (const [key, position] of Object.entries(positions ?? {})) {
+    if (position.status !== "watching") continue;
+    const symbol = root(position.ticker || key);
+    if (held.has(symbol)) continue;
+    grouped.set(symbol, [...(grouped.get(symbol) ?? []), [key, position]]);
+  }
+  return [...grouped.entries()].map(([symbol, matches]) => {
+    const position = pickMatch(symbol, matches)[1];
+    const at = matches.map(([, item]) => latestAt(item)).filter(Boolean).sort().at(-1) ?? null;
+    const elapsed = at && asOf ? Date.parse(asOf) - Date.parse(at) : null;
+    return {
+      ticker: displayTicker(matches),
+      horizon: position.horizon ?? null,
+      entry: position.entry ?? null,
+      stopLoss: position.stop_loss ?? null,
+      tp1: position.tp1 ?? null,
+      tp2: position.tp2 ?? null,
+      at,
+      days: elapsed == null ? null : Math.floor(elapsed / 86400000),
+      status: "watching",
+    };
+  }).sort((left, right) => (right.at ?? "").localeCompare(left.at ?? "") || left.ticker.localeCompare(right.ticker));
+}
+
+export function filterWatch(rows, query = "") {
+  const needle = query.trim().toUpperCase();
+  if (!needle) return rows;
+  return rows.filter((row) => row.ticker.toUpperCase().includes(needle));
+}
+
 export function buildOverview({ open, closed, thesis }) {
   const lots = open?.lots ?? [];
   const records = closed?.records ?? [];
@@ -414,6 +461,7 @@ export function buildOverview({ open, closed, thesis }) {
     groups,
     realized,
     closed: closedSlices,
+    watchlist: watchlistOf(positions, lots, asOf),
     alerts: alertsOf(lots, accounts, groups),
     hygiene: hygieneOf(lots, records, positions),
   };

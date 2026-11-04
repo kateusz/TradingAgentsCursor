@@ -5,12 +5,13 @@ import thesisBook from "../../portfolio/thesis.json";
 import { CURRENCIES, buildOverview, money, signedPercent } from "./metrics.js";
 import ClosedTrades from "./ClosedTrades.jsx";
 import OpenPositions from "./OpenPositions.jsx";
+import Watchlist from "./Watchlist.jsx";
 
 const NAV = {
   Overview: "overview",
   "Open positions": "open",
   "Closed trades": "closed",
-  Watchlist: null,
+  Watchlist: "watch",
   "Data & import": null,
 };
 const BOOKS = {
@@ -170,6 +171,8 @@ export default function App() {
           />
         ) : page === "closed" ? (
           <ClosedTrades currency={currency} slices={view.closed[currency]} />
+        ) : page === "watch" ? (
+          <Watchlist rows={view.watchlist} onAnalyze={analyze} copied={copied} copyError={copyError} />
         ) : (
         <>
         <section className="grid gap-2 border border-[#1E293B] bg-[#0D1322] px-3 py-2 min-[1200px]:grid-cols-[auto_minmax(0,1fr)_auto] min-[1200px]:items-center">
