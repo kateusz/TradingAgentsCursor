@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import test from "node:test";
-import { buildOverview, filterOpenGroups, openStats } from "./metrics.js";
+import { buildOverview, closedStats, filterClosed, filterOpenGroups, groupClosed, openStats } from "./metrics.js";
 
 function lot(currency, ticker, value, pnl, extra = {}) {
   const id = extra.position_id ?? `${ticker}-${value}`;
@@ -121,6 +121,39 @@ test("keeps lot rows and filters them inside one currency book", () => {
   assert.deepEqual(swapped[0].children.map((row) => row.positionId), ["100"]);
   assert.equal(filterOpenGroups(usd, { query: "300" })[0].ticker, "GENI.US");
   assert.equal(view.groups.PLN[0].ticker, "XTB.PL");
+});
+
+test("groups closed slices inside one currency", () => {
+  const view = buildOverview({
+    open: { updated_at: asOf, lots: [] },
+    closed: {
+      records: [
+        { account_currency: "USD", ticker: "TTWO.US", position_id: "1", category: "CFD", side: "BUY", volume: 2, open_price: 10, close_price: 8, open_time_utc: "2026-01-01 00:00:00", close_time_utc: "2026-01-03 00:00:00", profit_loss: -4, swap: -1, comment: "[S/L]" },
+        { account_currency: "USD", ticker: "TTWO.US", position_id: "1", category: "CFD", side: "BUY", volume: 1, open_price: 10, close_price: 12, open_time_utc: "2026-01-01 00:00:00", close_time_utc: "2026-01-11 00:00:00", profit_loss: 2, swap: 0, comment: null },
+        { account_currency: "PLN", ticker: "XTB.PL", position_id: "9", category: "STOCK", side: "BUY", volume: 1, open_price: 1, close_price: 2, open_time_utc: "2026-01-01 00:00:00", close_time_utc: "2026-01-02 00:00:00", profit_loss: 5, comment: "[T/P]" },
+      ],
+    },
+    thesis: { positions: {} },
+  });
+  const loss = view.closed.USD.find((row) => row.pnl === -4);
+  const grouped = groupClosed(view.closed.USD);
+  const stats = closedStats(view.closed.USD);
+
+  assert.equal(view.closed.USD.length, 2);
+  assert.equal(view.closed.EUR.length, 0);
+  assert.equal(loss.holdDays, 2);
+  assert.equal(loss.stop, true);
+  assert.equal(grouped.length, 1);
+  assert.equal(grouped[0].slices, 2);
+  assert.equal(grouped[0].pnl, -2);
+  assert.equal(stats.winRate, 0.5);
+  assert.equal(stats.profitFactor, 0.5);
+  assert.equal(stats.avgWin, 2);
+  assert.equal(stats.avgLoss, -4);
+  assert.equal(stats.swap, -1);
+  assert.equal(filterClosed(view.closed.USD, { category: "STOCK" }).length, 0);
+  assert.equal(filterClosed(view.closed.USD, { result: "loss" })[0].positionId, "1");
+  assert.equal(view.closed.PLN[0].takeProfit, true);
 });
 
 test("scores closed history inside the selected currency", () => {

@@ -50,10 +50,15 @@ function thesisFor(ticker, positions, asOf) {
   };
 }
 
+function instant(value) {
+  if (!value) return NaN;
+  const text = String(value);
+  return Date.parse(text.includes("T") ? text : text.replace(" ", "T") + "Z");
+}
+
 function ageDays(opened, asOf) {
-  if (!opened || !asOf) return null;
-  const start = Date.parse(String(opened).replace(" ", "T") + "Z");
-  const end = Date.parse(asOf);
+  const start = instant(opened);
+  const end = instant(asOf);
   if (!Number.isFinite(start) || !Number.isFinite(end)) return null;
   return Math.max(0, Math.floor((end - start) / 86400000));
 }
@@ -203,6 +208,107 @@ function accountOf(book, groups) {
   };
 }
 
+function sliceView(row) {
+  const comment = row.comment || "";
+  return {
+    positionId: String(row.position_id),
+    ticker: row.ticker,
+    category: row.category || null,
+    side: row.side || null,
+    volume: round2(Number(row.volume) || 0),
+    openPrice: row.open_price ?? null,
+    closePrice: row.close_price ?? null,
+    opened: row.open_time_utc ?? null,
+    closed: row.close_time_utc ?? null,
+    holdDays: ageDays(row.open_time_utc, row.close_time_utc),
+    pnl: round2(Number(row.profit_loss) || 0),
+    swap: row.swap ?? null,
+    comment: row.comment || null,
+    stop: comment.includes("[S/L]"),
+    takeProfit: comment.includes("[T/P]"),
+  };
+}
+
+function closedBook(records) {
+  return records
+    .map(sliceView)
+    .sort((left, right) => String(right.closed).localeCompare(String(left.closed)));
+}
+
+export function filterClosed(slices, { query = "", category = "all", result = "all", from = "", to = "" } = {}) {
+  const needle = query.trim().toUpperCase();
+  return slices.filter((slice) => {
+    const text = `${slice.ticker} ${slice.positionId}`.toUpperCase();
+    if (needle && !text.includes(needle)) return false;
+    if (category !== "all" && slice.category !== category) return false;
+    if (result === "win" && !(slice.pnl > 0)) return false;
+    if (result === "loss" && !(slice.pnl < 0)) return false;
+    const day = String(slice.closed).slice(0, 10);
+    if (from && day < from) return false;
+    if (to && day > to) return false;
+    return true;
+  });
+}
+
+export function groupClosed(slices) {
+  const grouped = new Map();
+  for (const slice of slices) {
+    const row = grouped.get(slice.positionId) ?? {
+      positionId: slice.positionId,
+      ticker: slice.ticker,
+      category: slice.category,
+      side: slice.side,
+      slices: 0,
+      volume: 0,
+      pnl: 0,
+      swap: 0,
+      opened: slice.opened,
+      closed: slice.closed,
+      stop: false,
+      takeProfit: false,
+      children: [],
+    };
+    row.slices += 1;
+    row.volume += slice.volume;
+    row.pnl += slice.pnl;
+    row.swap += Number(slice.swap) || 0;
+    if (String(slice.opened) < String(row.opened)) row.opened = slice.opened;
+    if (String(slice.closed) > String(row.closed)) row.closed = slice.closed;
+    row.stop = row.stop || slice.stop;
+    row.takeProfit = row.takeProfit || slice.takeProfit;
+    row.children.push(slice);
+    grouped.set(slice.positionId, row);
+  }
+  return [...grouped.values()]
+    .map((row) => ({
+      ...row,
+      volume: round2(row.volume),
+      pnl: round2(row.pnl),
+      swap: round2(row.swap),
+      holdDays: ageDays(row.opened, row.closed),
+      children: [...row.children].sort((left, right) => String(right.closed).localeCompare(String(left.closed))),
+    }))
+    .sort((left, right) => String(right.closed).localeCompare(String(left.closed)));
+}
+
+export function closedStats(slices) {
+  const decided = slices.filter((slice) => slice.pnl);
+  const wins = decided.filter((slice) => slice.pnl > 0);
+  const losses = decided.filter((slice) => slice.pnl < 0);
+  const gain = wins.reduce((total, slice) => total + slice.pnl, 0);
+  const loss = losses.reduce((total, slice) => total + slice.pnl, 0);
+  return {
+    pnl: round2(slices.reduce((total, slice) => total + slice.pnl, 0)),
+    slices: slices.length,
+    positions: new Set(slices.map((slice) => slice.positionId)).size,
+    winRate: decided.length ? wins.length / decided.length : 0,
+    profitFactor: loss ? round2(gain / Math.abs(loss)) : null,
+    avgWin: wins.length ? round2(gain / wins.length) : null,
+    avgLoss: losses.length ? round2(loss / losses.length) : null,
+    swap: round2(slices.reduce((total, slice) => total + (Number(slice.swap) || 0), 0)),
+  };
+}
+
 function realizedOf(rows) {
   const decided = rows.filter((row) => row.profit_loss);
   const wins = decided.filter((row) => row.profit_loss > 0);
@@ -291,6 +397,7 @@ export function buildOverview({ open, closed, thesis }) {
   const records = closed?.records ?? [];
   const positions = thesis?.positions ?? {};
   const asOf = open?.updated_at ?? null;
+  const closedSlices = {};
   const accounts = {};
   const groups = {};
   const realized = {};
@@ -299,12 +406,14 @@ export function buildOverview({ open, closed, thesis }) {
     groups[currency] = groupBook(book, positions, asOf);
     accounts[currency] = accountOf(book, groups[currency]);
     realized[currency] = realizedOf(records.filter((row) => row.account_currency === currency));
+    closedSlices[currency] = closedBook(records.filter((row) => row.account_currency === currency));
   }
   return {
     asOf,
     accounts,
     groups,
     realized,
+    closed: closedSlices,
     alerts: alertsOf(lots, accounts, groups),
     hygiene: hygieneOf(lots, records, positions),
   };

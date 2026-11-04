@@ -3,12 +3,13 @@ import closedBook from "../../portfolio/broker/closed.json";
 import openBook from "../../portfolio/broker/open.json";
 import thesisBook from "../../portfolio/thesis.json";
 import { CURRENCIES, buildOverview, money, signedPercent } from "./metrics.js";
+import ClosedTrades from "./ClosedTrades.jsx";
 import OpenPositions from "./OpenPositions.jsx";
 
 const NAV = {
   Overview: "overview",
   "Open positions": "open",
-  "Closed trades": null,
+  "Closed trades": "closed",
   Watchlist: null,
   "Data & import": null,
 };
@@ -167,6 +168,8 @@ export default function App() {
             copied={copied}
             copyError={copyError}
           />
+        ) : page === "closed" ? (
+          <ClosedTrades currency={currency} slices={view.closed[currency]} />
         ) : (
         <>
         <section className="grid gap-2 border border-[#1E293B] bg-[#0D1322] px-3 py-2 min-[1200px]:grid-cols-[auto_minmax(0,1fr)_auto] min-[1200px]:items-center">
