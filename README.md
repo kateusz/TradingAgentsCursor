@@ -270,7 +270,7 @@ You can also write naturally, e.g. *“analyze GENI.US with Cursor”* or *“re
 
 Skill: [`.cursor/skills/analyze-portfolio/SKILL.md`](.cursor/skills/analyze-portfolio/SKILL.md).
 
-1. Reads `portfolio/holdings.json` for `status=owned`.
+1. Reads **owned lots** from `portfolio/broker/open.json` (XTB import) merged with `portfolio/thesis.json`.
 2. Launches **one Task subagent per ticker** (parallel), each running the full `/analyze-ticker` pipeline as an existing holder.
 3. Default **`depth=shallow`** (fast daily refresh). Override with `depth=medium` / `deep` after earnings, gaps, or a long break.
 4. Skips “czy posiadasz?” / “czy kupujesz?”; updates memory with `event=reanalyzed` and refreshed SL/TP from each ticket.
@@ -283,26 +283,59 @@ Skill: [`.cursor/skills/analyze-portfolio/SKILL.md`](.cursor/skills/analyze-port
 3. **Stitch** — `scripts/stitch_report.py` builds **`complete_report.md`** (English research archive).
 4. **Gates** — position (new long vs already own) and horizon (`swing` vs `position`) if not already in the command. Skipped when memory says `owned` or under `/analyze-portfolio`.
 5. **Trade ticket** — a short Polish **`recommendations.md`** compressed from trader + PM (not a second research report), plus one chart in `charts/`.
-6. **Portfolio memory** — after the ticket, the agent asks whether you **bought** (new) or **hold/add/exit** (existing) and writes `portfolio/holdings.json` so the next run remembers ownership. Portfolio batch uses `reanalyzed` instead of asking.
+6. **Portfolio memory** — after the ticket, the agent writes **thesis** fields (SL/TP/horizon) to `portfolio/thesis.json`. **Ownership** comes from XTB CSV import (`portfolio/broker/open.json`). Portfolio batch uses `reanalyzed` instead of asking.
 
-### Portfolio memory
+### Portfolio memory & XTB import
 
-Personal holdings live in `portfolio/holdings.json` (**gitignored**). Example schema: [`portfolio/holdings.example.json`](portfolio/holdings.example.json).
+| File | Role |
+|------|------|
+| `portfolio/broker/open.json` | Open lots from XTB (regenerated on import) |
+| `portfolio/broker/closed.json` | Closed trade history (append on import) |
+| `portfolio/thesis.json` | Agent SL/TP, horizon, watchlist, history (**gitignored**) |
+
+Import your exports (PLN/EUR/USD open + closed):
 
 ```bash
-# Is this ticker owned?
+python scripts/xtb_import.py \
+  "/path/XTB-PLN - Open Positions.csv" \
+  "/path/XTB-PLN - Closed Positions.csv" \
+  "/path/XTB-EUR - Open Positions.csv" \
+  "/path/XTB-EUR - Closed Positions.csv" \
+  "/path/XTB-USD - Open Positions.csv" \
+  "/path/XTB-USD - Closed Positions.csv"
+```
+
+Copies land in `portfolio/imports/`. Then list owned lots:
+
+```bash
+python scripts/portfolio_memory.py list --status owned
+```
+
+Thesis schema example: [`portfolio/holdings.example.json`](portfolio/holdings.example.json) (same shape as before; keys can be `TICKER#XTB_POSITION_ID`).
+
+Overview dashboard (localhost only):
+
+```bash
+cd dashboard && npm install && npm test && npm run dev
+```
+
+Open `http://127.0.0.1:5173`. It reads the three portfolio JSON files and keeps USD, PLN, and EUR separate.
+
+```bash
+# Is this ticker owned? (broker + thesis)
 python scripts/portfolio_memory.py get --ticker GENI.US
 
 # List open positions
 python scripts/portfolio_memory.py list --status owned
 
-# Manual update
+# Update thesis after a ticket (entry usually from broker)
 python scripts/portfolio_memory.py set \
-  --ticker GENI.US --status owned --event bought \
-  --entry 7.30 --stop-loss 6.39 --tp1 9 --tp2 10 --horizon swing
+  --ticker GENI.US --position-key GENI.US#2738235085 \
+  --status owned --event reanalyzed \
+  --stop-loss 6.39 --tp1 9 --tp2 10 --horizon swing
 ```
 
-Statuses: `owned` | `watching` | `closed`. When `owned`, `/analyze-ticker` skips “czy już posiadasz?” and uses the holder ticket.
+Statuses: `owned` (from broker import) | `watching` | `closed` (thesis-only). When `owned`, `/analyze-ticker` skips “czy już posiadasz?” and uses broker **entry** when present.
 
 ### Outputs
 
@@ -311,7 +344,7 @@ Statuses: `owned` | `watching` | `closed`. When `owned`, `/analyze-ticker` skips
 | `reports/{TICKER}_{timestamp}/recommendations.md` | Polish **trade ticket** (werdykt, wejście, SL, TP1, TP2) — **primary deliverable** |
 | `reports/{TICKER}_{timestamp}/complete_report.md` | Full multi-agent English report (deep dive) |
 | `reports/{TICKER}_{timestamp}/charts/*.png` | Candlestick chart with SL/TP levels |
-| `portfolio/holdings.json` | Your remembered positions (local, not committed) |
+| `portfolio/thesis.json` + `portfolio/broker/open.json` | Thesis + broker book (local, not committed) |
 
 Intermediate folders (`1_analysts/`, `2_research/`, etc.) are kept for debugging but are not the main user-facing result.
 

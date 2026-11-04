@@ -91,7 +91,7 @@ Use absolute paths in all subagent prompts. Resolve from workspace root:
 - `REPO_ROOT` = absolute path to this repository (e.g. `/Users/.../TradingAgents`)
 - `SKILL_DIR` = `{REPO_ROOT}/.cursor/skills/analyze-ticker`
 - `ROLES_DIR` = `{SKILL_DIR}/roles`
-- `HOLDINGS` = `{REPO_ROOT}/portfolio/holdings.json` (personal memory; gitignored)
+- `HOLDINGS` = `{REPO_ROOT}/portfolio/thesis.json` (thesis overlay; gitignored). Ownership from `portfolio/broker/open.json` via `xtb_import`.
 
 ## Steps
 
@@ -255,7 +255,7 @@ python scripts/portfolio_memory.py get --ticker TICKER
 
 | Result `status` | Effect |
 |-----------------|--------|
-| `owned` | Skip position question. Use `recommendations-existing-position.md`. Tell the user you remembered they own it (show entry/SL if present). If `entry` is missing, run **11.A.1** before Phase 12. |
+| `owned` | Skip position question. Use `recommendations-existing-position.md`. Use broker `entry` from `portfolio_memory.py get` when present (`entry_source: broker`); skip **11.A.1** in that case. If `entry` is missing, run **11.A.1** before Phase 12. |
 | `watching` / `closed` / `unknown` | Ask position status as below (unless user already stated it). |
 
 If `get` returns multiple lots (`positions` object with 2+ keys), ask which lot this run is for **or** whether this is a **new** lot (`--new` on set). Pass the chosen `position_key` through the rest of the flow.
@@ -394,4 +394,4 @@ Confirm to the user that memory was updated (`portfolio/holdings.json`). Next `/
 - Partial run dirs stay on disk for debugging (no auto-delete).
 - **User deliverable:** short Polish **trade ticket** in `recommendations.md` (+ chart). `complete_report.md` is the English research archive.
 - **Gates:** position status required before Phase 12; for **Już posiadam** / `owned`, entry price required (11.A.1); ask horizon if not in the command.
-- **Memory:** read/write `portfolio/holdings.json` via `scripts/portfolio_memory.py` (never invent ownership).
+- **Memory:** read merged broker+thesis via `scripts/portfolio_memory.py`; write thesis only with `set` (never invent ownership).

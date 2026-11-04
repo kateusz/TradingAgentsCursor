@@ -218,8 +218,15 @@ __marimo__/
 # Cache
 **/data_cache/
 
+# Local dashboard
+dashboard/node_modules/
+dashboard/dist/
+
 # Personal portfolio memory (local only)
 portfolio/holdings.json
+portfolio/thesis.json
+portfolio/broker/
+portfolio/imports/
 
 # Analysis reports: ignore raw data and agent drafts; keep only deliverables
 reports/**

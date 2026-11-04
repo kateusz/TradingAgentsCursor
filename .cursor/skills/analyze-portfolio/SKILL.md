@@ -1,14 +1,14 @@
 ---
 name: analyze-portfolio
 description: >-
-  Re-runs /analyze-ticker for every owned position in portfolio/holdings.json,
-  one Cursor Task subagent per ticker. Use when the user says /analyze-portfolio,
+  Re-runs /analyze-ticker for every owned lot (broker open + thesis merge),
+  one Cursor Task subagent per lot. Use when the user says /analyze-portfolio,
   asks to re-analyze holdings, or analyze all owned instruments.
 ---
 
 # Analyze Portfolio (owned positions)
 
-Fan-out: for each `status=owned` **lot** in `portfolio/holdings.json` (each dict key under `positions`, e.g. `GENI.US` and `GENI.US#2`), launch **one** Task subagent that runs the full [analyze-ticker](../analyze-ticker/SKILL.md) pipeline.
+Fan-out: for each **open broker lot** merged with thesis (`status=owned`), launch **one** Task subagent that runs the full [analyze-ticker](../analyze-ticker/SKILL.md) pipeline. Keys look like `GENI.US#2738235085` or legacy `GENI.US#2`.
 
 ## Inputs
 

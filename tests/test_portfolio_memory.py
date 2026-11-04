@@ -14,9 +14,11 @@ def _load():
 def test_portfolio_memory_roundtrip(tmp_path: Path):
     mod = _load()
     path = tmp_path / "holdings.json"
+    broker = tmp_path / "open.json"
     assert (
         mod.cmd_set(
             path,
+            broker,
             ticker="geni.us",
             position_key=None,
             new=False,
@@ -29,6 +31,7 @@ def test_portfolio_memory_roundtrip(tmp_path: Path):
             run_dir="reports/GENI.US_x",
             event="bought",
             notes=None,
+            leverage=None,
         )
         == 0
     )
@@ -42,6 +45,7 @@ def test_portfolio_memory_roundtrip(tmp_path: Path):
     assert (
         mod.cmd_set(
             path,
+            broker,
             ticker="NVDA",
             position_key=None,
             new=False,
@@ -54,6 +58,7 @@ def test_portfolio_memory_roundtrip(tmp_path: Path):
             run_dir=None,
             event="skipped",
             notes="no buy",
+            leverage=None,
         )
         == 0
     )
@@ -64,9 +69,11 @@ def test_portfolio_memory_roundtrip(tmp_path: Path):
 def test_multiple_lots_same_ticker(tmp_path: Path):
     mod = _load()
     path = tmp_path / "holdings.json"
+    broker = tmp_path / "open.json"
 
     mod.cmd_set(
         path,
+        broker,
         ticker="GENI.US",
         position_key=None,
         new=False,
@@ -79,9 +86,11 @@ def test_multiple_lots_same_ticker(tmp_path: Path):
         run_dir="reports/GENI.US_1",
         event="bought",
         notes="first lot",
+        leverage=None,
     )
     mod.cmd_set(
         path,
+        broker,
         ticker="GENI.US",
         position_key=None,
         new=True,
@@ -94,6 +103,7 @@ def test_multiple_lots_same_ticker(tmp_path: Path):
         run_dir="reports/GENI.US_2",
         event="bought",
         notes="second lot",
+        leverage=None,
     )
 
     data = mod._load(path)
@@ -106,14 +116,14 @@ def test_multiple_lots_same_ticker(tmp_path: Path):
 
     buf = io.StringIO()
     with redirect_stdout(buf):
-        mod.cmd_get(path, "GENI.US", None)
+        mod.cmd_get(path, broker, "GENI.US", None)
     payload = json.loads(buf.getvalue())
     assert payload["ticker"] == "GENI.US"
     assert set(payload["positions"]) == {"GENI.US", "GENI.US#2"}
 
     buf = io.StringIO()
     with redirect_stdout(buf):
-        mod.cmd_get(path, "GENI.US", "GENI.US#2")
+        mod.cmd_get(path, broker, "GENI.US", "GENI.US#2")
     lot2 = json.loads(buf.getvalue())
     assert lot2["entry"] == 8.1
     assert lot2["position_key"] == "GENI.US#2"
@@ -122,9 +132,11 @@ def test_multiple_lots_same_ticker(tmp_path: Path):
 def test_set_requires_key_when_multiple_lots(tmp_path: Path):
     mod = _load()
     path = tmp_path / "holdings.json"
+    broker = tmp_path / "open.json"
     for entry in (7.3, 8.1):
         mod.cmd_set(
             path,
+            broker,
             ticker="GENI.US",
             position_key=None,
             new=entry != 7.3,
@@ -137,11 +149,13 @@ def test_set_requires_key_when_multiple_lots(tmp_path: Path):
             run_dir=None,
             event="bought",
             notes=None,
+            leverage=None,
         )
 
     assert (
         mod.cmd_set(
             path,
+            broker,
             ticker="GENI.US",
             position_key=None,
             new=False,
@@ -154,6 +168,7 @@ def test_set_requires_key_when_multiple_lots(tmp_path: Path):
             run_dir=None,
             event="hold",
             notes=None,
+            leverage=None,
         )
         == 1
     )
@@ -161,6 +176,7 @@ def test_set_requires_key_when_multiple_lots(tmp_path: Path):
     assert (
         mod.cmd_set(
             path,
+            broker,
             ticker="GENI.US",
             position_key="GENI.US#2",
             new=False,
@@ -173,6 +189,7 @@ def test_set_requires_key_when_multiple_lots(tmp_path: Path):
             run_dir=None,
             event="hold",
             notes=None,
+            leverage=None,
         )
         == 0
     )
