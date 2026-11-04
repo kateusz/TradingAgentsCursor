@@ -439,6 +439,54 @@ export function filterWatch(rows, query = "") {
   return rows.filter((row) => row.ticker.toUpperCase().includes(needle));
 }
 
+export function classifyImportName(name) {
+  const text = String(name).toLowerCase();
+  const currency = text.includes("usd") ? "USD" : text.includes("eur") ? "EUR" : text.includes("pln") ? "PLN" : null;
+  const kind = text.includes("closed") ? "closed" : text.includes("open") ? "open" : null;
+  if (!currency || !kind) return null;
+  return { currency, kind, name: String(name) };
+}
+
+export function stageImports(names) {
+  const staged = { USD: {}, PLN: {}, EUR: {} };
+  const skipped = [];
+  for (const name of names) {
+    const slot = classifyImportName(name);
+    if (!slot) {
+      skipped.push(String(name));
+      continue;
+    }
+    staged[slot.currency][slot.kind] = slot.name;
+  }
+  const missingOpen = CURRENCIES.filter((currency) => !staged[currency].open);
+  return { staged, skipped, missingOpen, ready: missingOpen.length === 0 };
+}
+
+export function importCommand(names) {
+  const lines = names.map((name) => `  ${JSON.stringify(name)}`);
+  return `python3 scripts/xtb_import.py \\\n${lines.join(" \\\n")}`;
+}
+
+function importSnapshot(open, closed, lots, records, positions) {
+  const closedSources = [...new Set(records.map((row) => row.source_file).filter(Boolean))].sort();
+  const currencies = {};
+  for (const currency of CURRENCIES) {
+    currencies[currency] = {
+      open: lots.filter((lot) => lot.account_currency === currency).length,
+      closed: records.filter((row) => row.account_currency === currency).length,
+    };
+  }
+  return {
+    updatedAt: open?.updated_at ?? closed?.updated_at ?? null,
+    openLots: lots.length,
+    closedRows: records.length,
+    openSources: (open?.source_files ?? []).map((path) => String(path).split("/").pop()),
+    closedSources,
+    currencies,
+    hygiene: hygieneOf(lots, records, positions),
+  };
+}
+
 export function buildOverview({ open, closed, thesis }) {
   const lots = open?.lots ?? [];
   const records = closed?.records ?? [];
@@ -462,6 +510,7 @@ export function buildOverview({ open, closed, thesis }) {
     realized,
     closed: closedSlices,
     watchlist: watchlistOf(positions, lots, asOf),
+    imports: importSnapshot(open, closed, lots, records, positions),
     alerts: alertsOf(lots, accounts, groups),
     hygiene: hygieneOf(lots, records, positions),
   };

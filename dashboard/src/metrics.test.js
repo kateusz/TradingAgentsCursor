@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import test from "node:test";
-import { buildOverview, closedStats, filterClosed, filterOpenGroups, filterWatch, groupClosed, openStats } from "./metrics.js";
+import { buildOverview, classifyImportName, closedStats, filterClosed, filterOpenGroups, filterWatch, groupClosed, openStats, stageImports } from "./metrics.js";
 
 function lot(currency, ticker, value, pnl, extra = {}) {
   const id = extra.position_id ?? `${ticker}-${value}`;
@@ -201,4 +201,31 @@ test("lists watched names that are not open lots", () => {
   assert.equal(view.watchlist[0].at, "2026-10-15T00:00:00Z");
   assert.equal(filterWatch(view.watchlist, "aapl").length, 1);
   assert.equal(view.watchlist[0].status, "watching");
+});
+
+test("describes the snapshot and stages a six-file import", () => {
+  const view = buildOverview({
+    open: {
+      updated_at: asOf,
+      source_files: ["portfolio/imports/XTB-USD - Open Positions.csv"],
+      lots: [lot("USD", "TTWO.US", 10, -1)],
+    },
+    closed: { records: [{ account_currency: "USD", source_file: "XTB-USD - Closed Positions.csv", profit_loss: 1 }] },
+    thesis: { positions: { NVDA: { status: "watching" } } },
+  });
+  const staged = stageImports([
+    "XTB-USD - Open Positions.csv",
+    "XTB-PLN - Open Positions.csv",
+    "XTB-EUR - Open Positions.csv",
+    "notes.txt",
+  ]);
+
+  assert.equal(view.imports.openLots, 1);
+  assert.equal(view.imports.closedRows, 1);
+  assert.equal(view.imports.openSources[0], "XTB-USD - Open Positions.csv");
+  assert.ok(view.imports.hygiene.some((note) => note.includes("instrument category")));
+  assert.equal(classifyImportName("XTB-EUR - Closed Positions.csv").kind, "closed");
+  assert.equal(stageImports(["XTB-USD - Open Positions.csv"]).ready, false);
+  assert.equal(staged.ready, true);
+  assert.deepEqual(staged.skipped, ["notes.txt"]);
 });

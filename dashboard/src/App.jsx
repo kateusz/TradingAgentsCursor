@@ -4,6 +4,7 @@ import openBook from "../../portfolio/broker/open.json";
 import thesisBook from "../../portfolio/thesis.json";
 import { CURRENCIES, buildOverview, money, signedPercent } from "./metrics.js";
 import ClosedTrades from "./ClosedTrades.jsx";
+import DataImport from "./DataImport.jsx";
 import OpenPositions from "./OpenPositions.jsx";
 import Watchlist from "./Watchlist.jsx";
 
@@ -12,7 +13,7 @@ const NAV = {
   "Open positions": "open",
   "Closed trades": "closed",
   Watchlist: "watch",
-  "Data & import": null,
+  "Data & import": "data",
 };
 const BOOKS = {
   USD: ["USD book", "Primary focus"],
@@ -90,19 +91,22 @@ export default function App() {
   const queue = [worst, stale].filter((row, index, all) => row && all.findIndex((item) => item.ticker === row.ticker) === index);
   const history = view.realized[currency];
 
-  async function analyze(ticker) {
-    const command = `/analyze-ticker ${ticker}`;
+  async function copyText(text, token = text) {
     try {
       await Promise.race([
-        navigator.clipboard.writeText(command),
+        navigator.clipboard.writeText(text),
         new Promise((_, reject) => setTimeout(() => reject(new Error("clipboard timeout")), 700)),
       ]);
-      setCopied(ticker);
+      setCopied(token);
       setCopyError("");
     } catch {
       setCopied("");
-      setCopyError(command);
+      setCopyError(text);
     }
+  }
+
+  async function analyze(ticker) {
+    await copyText(`/analyze-ticker ${ticker}`, ticker);
   }
 
   return (
@@ -173,6 +177,8 @@ export default function App() {
           <ClosedTrades currency={currency} slices={view.closed[currency]} />
         ) : page === "watch" ? (
           <Watchlist rows={view.watchlist} onAnalyze={analyze} copied={copied} copyError={copyError} />
+        ) : page === "data" ? (
+          <DataImport imports={view.imports} copied={copied} copyError={copyError} onCopy={copyText} />
         ) : (
         <>
         <section className="grid gap-2 border border-[#1E293B] bg-[#0D1322] px-3 py-2 min-[1200px]:grid-cols-[auto_minmax(0,1fr)_auto] min-[1200px]:items-center">
