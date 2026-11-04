@@ -38,6 +38,10 @@ test("keeps each currency book isolated", () => {
   assert.equal(view.accounts.PLN.value, 50);
   assert.equal(view.accounts.EUR.lots, 0);
   assert.equal(view.accounts.EUR.value, 0);
+  assert.equal(view.alerts.USD.find((alert) => alert.id === "concentration").text.includes("TTWO.US"), true);
+  assert.equal(view.alerts.PLN.some((alert) => alert.text.includes("TTWO")), false);
+  assert.equal(view.alerts.PLN.find((alert) => alert.id === "concentration").text.includes("XTB.PL"), true);
+  assert.equal(view.alerts.EUR.length, 0);
   assert.equal("total" in view, false);
 });
 

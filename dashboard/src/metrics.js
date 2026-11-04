@@ -337,7 +337,7 @@ function realizedOf(rows) {
   };
 }
 
-function alertsOf(lots, accounts, groups) {
+function alertsOf(currency, lots, account, groups) {
   const alerts = [];
   const naked = lots.filter((lot) => lot.broker_stop_loss == null).length;
   if (lots.length) {
@@ -346,35 +346,34 @@ function alertsOf(lots, accounts, groups) {
       tone: "loss",
       kicker: "Ryzyko",
       value: `${round2((naked / lots.length) * 100)}% bez SL`,
-      text: `${naked} z ${lots.length} otwartych lotów nie ma stopu u brokera.`,
+      text: `${naked} z ${lots.length} otwartych lotów ${currency} nie ma stopu u brokera.`,
       tag: "Wykonanie",
     });
   }
-  const worst = [...groups.USD].sort((left, right) => left.pnl - right.pnl)[0];
-  if (worst && accounts.USD.pnl < 0 && worst.pnl < 0) {
-    const share = round2((worst.pnl / accounts.USD.pnl) * 100);
+  const worst = [...groups].sort((left, right) => left.pnl - right.pnl)[0];
+  if (worst && account.pnl < 0 && worst.pnl < 0) {
+    const share = round2((worst.pnl / account.pnl) * 100);
     alerts.push({
       id: "concentration",
       tone: "loss",
       kicker: "Koncentracja",
-      value: `${share}% straty USD`,
-      text: `${worst.ticker} to ${share}% niezrealizowanej straty w USD.`,
+      value: `${share}% straty ${currency}`,
+      text: `${worst.ticker} to ${share}% niezrealizowanej straty w ${currency}.`,
       tag: "Asymetria",
     });
   }
-  if (accounts.USD.swap) {
+  if (account.swap) {
     alerts.push({
       id: "swap",
       tone: "loss",
       kicker: "Finansowanie",
-      value: accounts.USD.swap,
-      currency: "USD",
-      text: "Koszt swap na otwartych lotach USD.",
+      value: account.swap,
+      currency,
+      text: `Koszt swap na otwartych lotach ${currency}.`,
       tag: "Nocne",
     });
   }
-  const stale = CURRENCIES
-    .flatMap((currency) => groups[currency])
+  const stale = [...groups]
     .filter((row) => (row.plan?.days ?? -1) > 30)
     .sort((left, right) => right.plan.days - left.plan.days)[0];
   if (stale) {
@@ -496,12 +495,14 @@ export function buildOverview({ open, closed, thesis }) {
   const accounts = {};
   const groups = {};
   const realized = {};
+  const alerts = {};
   for (const currency of CURRENCIES) {
     const book = lots.filter((lot) => lot.account_currency === currency);
     groups[currency] = groupBook(book, positions, asOf);
     accounts[currency] = accountOf(book, groups[currency]);
     realized[currency] = realizedOf(records.filter((row) => row.account_currency === currency));
     closedSlices[currency] = closedBook(records.filter((row) => row.account_currency === currency));
+    alerts[currency] = alertsOf(currency, book, accounts[currency], groups[currency]);
   }
   return {
     asOf,
@@ -511,7 +512,7 @@ export function buildOverview({ open, closed, thesis }) {
     closed: closedSlices,
     watchlist: watchlistOf(positions, lots, asOf),
     imports: importSnapshot(open, closed, lots, records, positions),
-    alerts: alertsOf(lots, accounts, groups),
+    alerts,
     hygiene: hygieneOf(lots, records, positions),
   };
 }

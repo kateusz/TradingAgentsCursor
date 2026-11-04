@@ -213,13 +213,13 @@ export default function App() {
           })}
         </section>
 
-        <section className="border border-[#1E293B] bg-[#0D1322]" aria-label="Aktywne ryzyka">
+        <section className="border border-[#1E293B] bg-[#0D1322]" aria-label={`Aktywne ryzyka ${currency}`}>
           <header className="flex items-center justify-between border-b border-[#1E293B] px-3 py-2">
-            <h2 className="font-mono text-[11px] tracking-[0.08em] text-[#94A3B8]">ANALIZA I RYZYKO // AKTYWNE ALERTY</h2>
-            <span className="font-mono text-[10px] text-[#FB7185]">{view.alerts.length} {view.alerts.length === 1 ? "ALERT" : "ALERTÓW"}</span>
+            <h2 className="font-mono text-[11px] tracking-[0.08em] text-[#94A3B8]">ANALIZA I RYZYKO // AKTYWNE ALERTY {currency}</h2>
+            <span className="font-mono text-[10px] text-[#FB7185]">{view.alerts[currency].length} {view.alerts[currency].length === 1 ? "ALERT" : "ALERTÓW"}</span>
           </header>
           <div className="grid min-[1200px]:grid-cols-4">
-            {view.alerts.map((alert) => (
+            {view.alerts[currency].length ? view.alerts[currency].map((alert) => (
               <article key={alert.id} className="border-[#1E293B] p-3 min-[1200px]:border-r min-[1200px]:last:border-r-0">
                 <p className="font-mono text-[10px] tracking-[0.08em] text-[#94A3B8]">{alert.kicker.toUpperCase()}</p>
                 <p className={`mt-2 font-mono text-[16px] ${alert.tone === "loss" ? "text-[#FB7185]" : "text-[#FCD34D]"}`}>
@@ -228,7 +228,7 @@ export default function App() {
                 <p className="mt-2 min-h-10 text-[12px] leading-4 text-[#CBD5E1]">{alert.text}</p>
                 <p className="mt-3 font-mono text-[10px] tracking-[0.06em] text-[#64748B]">{alert.tag.toUpperCase()}</p>
               </article>
-            ))}
+            )) : <p className="px-3 py-6 text-[13px] text-[#94A3B8]">Brak alertów dla {currency}.</p>}
           </div>
         </section>
 
