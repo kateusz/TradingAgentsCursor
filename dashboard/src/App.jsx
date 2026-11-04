@@ -3,8 +3,15 @@ import closedBook from "../../portfolio/broker/closed.json";
 import openBook from "../../portfolio/broker/open.json";
 import thesisBook from "../../portfolio/thesis.json";
 import { CURRENCIES, buildOverview, money, signedPercent } from "./metrics.js";
+import OpenPositions from "./OpenPositions.jsx";
 
-const NAV = ["Overview", "Open positions", "Closed trades", "Watchlist", "Data & import"];
+const NAV = {
+  Overview: "overview",
+  "Open positions": "open",
+  "Closed trades": null,
+  Watchlist: null,
+  "Data & import": null,
+};
 const BOOKS = {
   USD: ["USD book", "Primary focus"],
   PLN: ["PLN book", "Domestic GPW"],
@@ -64,6 +71,7 @@ export default function App() {
     closed: closedBook,
     thesis: thesisBook,
   }), []);
+  const [page, setPage] = useState("overview");
   const [currency, setCurrency] = useState("USD");
   const [sort, setSort] = useState("weight");
   const [copied, setCopied] = useState("");
@@ -129,13 +137,14 @@ export default function App() {
       </header>
 
       <nav className="flex min-h-9 flex-wrap items-center gap-1 border-b border-[#1E293B] px-3" aria-label="Primary">
-        {NAV.map((item) => (
+        {Object.entries(NAV).map(([item, id]) => (
           <button
             key={item}
             type="button"
-            disabled={item !== "Overview"}
-            aria-current={item === "Overview" ? "page" : undefined}
-            className={`h-9 border-b px-3 font-mono text-[11px] focus-visible:outline focus-visible:outline-1 focus-visible:outline-[#38BDF8] disabled:cursor-not-allowed disabled:text-[#64748B] ${item === "Overview" ? "border-[#38BDF8] text-white" : "border-transparent"}`}
+            disabled={!id}
+            aria-current={page === id ? "page" : undefined}
+            onClick={() => id && setPage(id)}
+            className={`h-9 border-b px-3 font-mono text-[11px] focus-visible:outline focus-visible:outline-1 focus-visible:outline-[#38BDF8] disabled:cursor-not-allowed disabled:text-[#64748B] ${page === id ? "border-[#38BDF8] text-white" : "border-transparent"}`}
           >
             {item}
           </button>
@@ -149,7 +158,17 @@ export default function App() {
         </ul>
       )}
 
-      <main className="grid gap-3 p-3">
+      <main className="grid min-w-0 gap-3 p-3">
+        {page === "open" ? (
+          <OpenPositions
+            currency={currency}
+            groups={view.groups[currency]}
+            onAnalyze={analyze}
+            copied={copied}
+            copyError={copyError}
+          />
+        ) : (
+        <>
         <section className="grid gap-2 border border-[#1E293B] bg-[#0D1322] px-3 py-2 min-[1200px]:grid-cols-[auto_minmax(0,1fr)_auto] min-[1200px]:items-center">
           <h1 className="font-mono text-[11px] font-semibold tracking-[0.04em] text-[#7DD3FC]">
             CURRENCY ISOLATION ACTIVE: NO SYNTHETIC FX CONVERSION
@@ -318,6 +337,8 @@ export default function App() {
             </section>
           </div>
         </section>
+        </>
+        )}
       </main>
       <footer className="flex h-8 items-center gap-4 border-t border-[#1E293B] px-3 font-mono text-[10px] text-[#64748B]">
         <span>Obsidian Capital</span>

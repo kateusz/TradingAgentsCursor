@@ -50,6 +50,37 @@ function thesisFor(ticker, positions, asOf) {
   };
 }
 
+function ageDays(opened, asOf) {
+  if (!opened || !asOf) return null;
+  const start = Date.parse(String(opened).replace(" ", "T") + "Z");
+  const end = Date.parse(asOf);
+  if (!Number.isFinite(start) || !Number.isFinite(end)) return null;
+  return Math.max(0, Math.floor((end - start) / 86400000));
+}
+
+function lotView(lot, asOf) {
+  const value = Number(lot.value) || 0;
+  const pnl = Number(lot.net_profit) || 0;
+  const cost = value - pnl;
+  return {
+    positionId: String(lot.position_id),
+    ticker: lot.ticker,
+    volume: round2(Number(lot.volume) || 0),
+    openPrice: lot.open_price ?? null,
+    current: lot.current_price ?? null,
+    value: round2(value),
+    pnl: round2(pnl),
+    pnlPct: cost ? round2((pnl / cost) * 100) : 0,
+    ageDays: ageDays(lot.open_time_utc, asOf),
+    opened: lot.open_time_utc ?? null,
+    brokerStop: lot.broker_stop_loss ?? null,
+    brokerTakeProfit: lot.broker_take_profit ?? null,
+    swap: lot.swap ?? null,
+    margin: lot.margin ?? null,
+    financed: lot.margin != null || lot.swap != null,
+  };
+}
+
 function groupBook(book, positions, asOf) {
   const grouped = new Map();
   for (const lot of book) {
@@ -63,6 +94,7 @@ function groupBook(book, positions, asOf) {
       current: lot.current_price,
       unprotected: 0,
       opened: lot.open_time_utc,
+      children: [],
     };
     row.lots += 1;
     row.value += Number(lot.value) || 0;
@@ -71,6 +103,7 @@ function groupBook(book, positions, asOf) {
     row.entryNotional += (Number(lot.open_price) || 0) * (Number(lot.volume) || 0);
     if (lot.broker_stop_loss == null) row.unprotected += 1;
     if (lot.open_time_utc < row.opened) row.opened = lot.open_time_utc;
+    row.children.push(lotView(lot, asOf));
     grouped.set(lot.ticker, row);
   }
   const total = sum([...grouped.values()], "value");
@@ -89,10 +122,65 @@ function groupBook(book, positions, asOf) {
         current: row.current,
         unprotected: row.unprotected,
         opened: row.opened,
+        ageDays: Math.max(...row.children.map((child) => child.ageDays ?? 0)),
+        children: [...row.children].sort((left, right) => String(left.opened).localeCompare(String(right.opened))),
         plan: thesisFor(row.ticker, positions, asOf),
       };
     })
     .sort((left, right) => right.value - left.value);
+}
+
+export function filterOpenGroups(groups, { query = "", mode = "all" } = {}) {
+  const needle = query.trim().toUpperCase();
+  return groups.flatMap((group) => {
+    const children = group.children.filter((lot) => {
+      const text = `${group.ticker} ${lot.positionId}`.toUpperCase();
+      if (needle && !text.includes(needle)) return false;
+      if (mode === "loss" && !(lot.pnl < 0)) return false;
+      if (mode === "nostop" && lot.brokerStop != null) return false;
+      if (mode === "swap" && !lot.swap) return false;
+      return true;
+    });
+    if (!children.length) return [];
+    const value = round2(sum(children, "value"));
+    const pnl = round2(sum(children, "pnl"));
+    const volume = children.reduce((total, lot) => total + lot.volume, 0);
+    const entryNotional = children.reduce((total, lot) => total + (Number(lot.openPrice) || 0) * lot.volume, 0);
+    const cost = value - pnl;
+    return [{
+      ...group,
+      lots: children.length,
+      children,
+      value,
+      pnl,
+      pnlPct: cost ? round2((pnl / cost) * 100) : 0,
+      volume: round2(volume),
+      avgEntry: volume ? round2(entryNotional / volume) : null,
+      unprotected: children.filter((lot) => lot.brokerStop == null).length,
+      swap: round2(children.reduce((total, lot) => total + (Number(lot.swap) || 0), 0)),
+    }];
+  });
+}
+
+export function openStats(groups) {
+  const lots = groups.flatMap((group) => group.children);
+  const stops = lots.filter((lot) => lot.brokerStop != null).length;
+  const planned = groups.filter((group) => group.plan?.stopLoss != null).length;
+  return {
+    lots: lots.length,
+    tickers: groups.length,
+    losing: lots.filter((lot) => lot.pnl < 0).length,
+    stops,
+    stopCoverage: lots.length ? stops / lots.length : 0,
+    financed: lots.filter((lot) => lot.financed).length,
+    swapLots: lots.filter((lot) => lot.swap).length,
+    swap: round2(lots.reduce((total, lot) => total + (Number(lot.swap) || 0), 0)),
+    planned,
+    missingPlan: groups.length - planned,
+    planCoverage: groups.length ? planned / groups.length : 0,
+    oldest: lots.reduce((best, lot) => ((lot.ageDays ?? -1) > (best?.ageDays ?? -1) ? lot : best), null),
+    worstSwap: lots.filter((lot) => lot.swap != null).sort((left, right) => left.swap - right.swap)[0] ?? null,
+  };
 }
 
 function accountOf(book, groups) {

@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import test from "node:test";
-import { buildOverview } from "./metrics.js";
+import { buildOverview, filterOpenGroups, openStats } from "./metrics.js";
 
 function lot(currency, ticker, value, pnl, extra = {}) {
   const id = extra.position_id ?? `${ticker}-${value}`;
@@ -87,6 +87,40 @@ test("uses the newest thesis when ticker keys differ", () => {
   });
 
   assert.equal(view.groups.USD[0].plan.stopLoss, 194.5);
+});
+
+test("keeps lot rows and filters them inside one currency book", () => {
+  const view = buildOverview({
+    open: {
+      updated_at: asOf,
+      lots: [
+        lot("USD", "TTWO.US", 80, -20, { position_id: "100", volume: 2, open: 50, swap: -2, margin: 10, opened: "2026-06-18 10:00:00" }),
+        lot("USD", "TTWO.US", 20, 5, { position_id: "200", volume: 1, open: 15, stop: 18, opened: "2026-10-02 10:00:00" }),
+        lot("USD", "GENI.US", 25, -5, { position_id: "300", opened: "2026-08-01 10:00:00" }),
+        lot("PLN", "XTB.PL", 50, -10, { position_id: "400" }),
+      ],
+    },
+    closed: { records: [] },
+    thesis: { positions: { TTWO: { stop_loss: 190, history: [{ at: "2026-10-01T12:00:00Z" }] } } },
+  });
+  const usd = view.groups.USD;
+  const ttwo = usd.find((row) => row.ticker === "TTWO.US");
+  const stats = openStats(usd);
+  const swapped = filterOpenGroups(usd, { mode: "swap" });
+
+  assert.equal(ttwo.children.length, 2);
+  assert.equal(ttwo.children[0].positionId, "100");
+  assert.equal(ttwo.children[0].financed, true);
+  assert.equal(ttwo.children[0].ageDays, 139);
+  assert.equal(usd.find((row) => row.ticker === "GENI.US").children[0].financed, false);
+  assert.equal(stats.lots, 3);
+  assert.equal(stats.losing, 2);
+  assert.equal(stats.stops, 1);
+  assert.equal(stats.planned, 1);
+  assert.equal(swapped.length, 1);
+  assert.deepEqual(swapped[0].children.map((row) => row.positionId), ["100"]);
+  assert.equal(filterOpenGroups(usd, { query: "300" })[0].ticker, "GENI.US");
+  assert.equal(view.groups.PLN[0].ticker, "XTB.PL");
 });
 
 test("scores closed history inside the selected currency", () => {
